@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html ng-app="belediyeModul">
+    <head>
+        <meta charset="utf-8" />
+        <title>Giriş Başarılı?</title>
+        <link href="styles/bootstrap.css" rel="stylesheet" />
+        <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+        <link href="kendo/styles/kendo.bootstrap.min.css" rel="stylesheet" />
+        <link href="kendo/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
+        <link href="kendo/styles/kendo.dataviz.min.css" rel="stylesheet"/>
+        <link href="kendo/styles/kendo.dataviz.flat.min.css" rel="stylesheet"/>
+        <link href="styles/main.css" rel="stylesheet" />
+        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+        <script type="text/javascript" charset="utf-8" src="kendo/js/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="kendo/js/kendo.all.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="scripts/app.js"></script>
+        <script type="text/javascript" charset="utf-8" src="scripts/angular.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="scripts/baskanmodel.js"></script>
+    </head>
+    <body id="belediyeCTRL" ng-controller="belediyeCTRL" onload="onLoad()">
+    <div data-role="view" id="tabstrip-randevular" data-title="Randevular" data-layout="mobile-tabstrip">
+    <ul id="tarihList" data-role="listview" data-style="inset">
+        <li><label>Tarih <input type="date" id="Tarih" ng-model="Tarih"></label></li>
+    </ul>
+    <ul data-role="listview" data-style="inset">
+        <li ng-show="Randevular.length < 1 || Randevular == null">Randevu Kaydı Yok</li>
+        <li ng-repeat="r in Randevular">
+            <div class="media">
+            <div class="pull-left">
+              <span class="label label-primary">{{r.BaslamaSaati}}</span>
+            </div>
+            <div class="media-body">
+              <p class="media-heading" style="font-size:15px"><strong>{{r.Yeri}}</strong></p>
+              <p style="font-size:13px">{{ r.Konu }}</p>
+            </div>
+          </div>
+        </li>
+    </ul>
+</div>
+
+    <div data-role="view" id="tabstrip-aramalar" data-title="Aramalar" data-layout="mobile-tabstrip">    
+        <ul data-role="listview" data-style="inset">
+            <li ng-show="Arayanlar.length < 1 || Arayanlar == null">Arama Kaydı Yok</li>
+            <li ng-repeat="a in Arayanlar">
+                <div class="media">
+                <div class="pull-left">
+                  <span class="label label-primary">{{a.AramaSaati}}</span>
+                </div>
+                <div class="media-body">
+                  <p class="media-heading" style="font-size:15px"><strong>{{a.ArayanAdi}}</strong></p>
+                  <p style="font-size:11px">{{ a.ArayanSoyadi }}</p>
+                  <p ng-show="a.Konu.length > 0" style="font-size:12px"><strong>Konu :</strong> {{ a.Konu }}</p>
+                  <p ng-show="a.Sonuc.length > 0" style="font-size:12px"><strong>Sonuç :</strong> {{ a.Sonuc }}</p>
+                </div>
+              </div>
+            </li>
+        </ul>
+    </div>
+
+    <div data-role="view" id="tabstrip-raporlar" data-title="Raporlar" data-layout="mobile-tabstrip">
+    <ul data-role="listview" data-style="inset" data-type="group" style="font-size:13px">
+        <li>Gider Bütçesi Raporları
+            <ul>
+                <li><a href="#rapor1">Hazırlanan Gider Bütçesinin Gerçekleşen Gider Bütçesine Oranı</a></li>
+            </ul>
+        </li>
+        <li>
+            Müdürlük Gider Bütçesi Raporları
+            <ul>
+                <li><a href="#rapor2">Müdürlük Bazında Hazırlanan Gider Bütçelerinin Toplam Gider Bütçesine Oranı</a></li>
+                <li><a href="#rapor3">Müdürlük Bazında Gerçekleşen Gider Bütçelerinin Toplam Gider Bütçesine Oranı</a></li>
+                <li><a href="#rapor4">Müdürlük Bazında Gerçekleşen Personel Giderlerinin Toplam Gelir Bütçesine Oranı</a></li>
+                <li><a href="#rapor5">Müdürlük Bazında Gerçekleşen Gider Bütçelerinin Gerçekleşen Gider Bütçelerine Oranı</a></li>
+            </ul>
+        </li>
+        <li>
+            Gelir Bütçesi Raporları
+            <ul>
+                <li><a href="#rapor6">Hazırlanan Gelir Bütçesinin Gerçekleşen Gelir Bütçesine Oranı</a></li>
+            </ul>
+        </li>
+        <li>
+            Tahsilat Bilgileri
+            <ul>
+                <li><a href="#rapor7">Tahsildar Bazında Yapılan Tahsilat Bilgisi</a></li>
+                <li><a href="#rapor8">Gelir Türü Bazında Yapılan Tahsilat Bilgisi</a></li>
+            </ul>
+        </li>
+        <li>
+            Muhasebe Bilgileri
+            <ul>
+                <li><a href="#rapor9">Banka Durum Bilgisi</a></li>
+            </ul>
+        </li>
+    </ul>
+
+</div>
+
+<div data-role="view" id="rapor1" data-title="Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
+    <p class="alert alert-info text-center" style="font-size:13px">
+        Hazırlanan Gider Bütçesinin Gerçekleşen Gider Bütçesine Oranı
+    </p>
+    <form ng-submit="GiderButceOranBilgisiForm()">
+    <div>
+        <ul data-role="listview" data-style="inset">
+        <li><label>Başlangıç Yılı <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+        <li><label>Bitiş Yılı <select data-ng-options="o for o in Yillar" data-ng-model="sorguBitisYil"></select></label></li>
+        <li>
+            <div class="buttonArea">
+                <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="GiderButceOranBilgisiForm()" value="Rapor Oluştur" />
+            </div>
+        </li>
+        </ul>
+    </div>
+    </form>
+     <div class="chart-wrapper">
+        <div id="rapor1-chart"></div>
+    </div>
+    <ul data-role="listview" data-style="inset" data-type="group" style="font-size:17px">
+        <li ng-repeat="r in GiderButceOranBilgisiSorguSonuc" class="km-group-container">
+            <div class="km-group-title">{{r.Yil}}</div>
+            <ul class="km-list" style="font-size:12px">
+                <li>Bütçe : <span class="sales-up">{{r.Butce | number:0}}</span></li>
+                <li>Harcama : <span class="sales-down">{{r.Harcama | number:0}}</span></li>
+                <li>Oran : <span class="value"> % {{r.Oran | number:0}}</span></li>
+            </ul>
+        </li>
+     </ul>
+</div>
+ 
+<div data-role="view" id="rapor2" data-title="Müdürlük Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
+    <p class="alert alert-info text-center" style="font-size:13px">
+    Müdürlük Bazında Hazırlanan Gider Bütçelerinin Toplam Gider Bütçesine Oranı
+    </p>
+    <form ng-submit="Rapor2()">
+    <div>
+        <ul data-role="listview" data-style="inset" style="font-size:14px">
+        <li><label>Yıl <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+        <li>
+            <div class="buttonArea">
+                <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor2()" value="Rapor Oluştur" />
+            </div>
+        </li>
+        </ul>
+    </div>
+    </form>
+     <div class="chart-wrapper">
+        <div id="rapor2-chart"></div>
+    </div>
+    <ul data-role="listview" data-style="inset" data-type="group" style="font-size:15px">
+        <li ng-repeat="r in Rapor2Sonuc" class="km-group-container">
+            <div class="km-group-title">{{r.Aciklama}}</div>
+            <ul class="km-list" style="font-size:13px">
+                <li>Bütçe : <span class="sales-up">{{r.MeclisKabul | number:0}}</span></li>
+                <li>Oran : <span class="value">{{r.KabulGiderOran}}</span></li>
+            </ul>
+        </li>
+     </ul>
+</div>
+<div data-role="view" id="rapor3" data-title="Müdürlük Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
+    <p class="alert alert-info text-center" style="font-size:13px">
+        Müdürlük Bazında Gerçekleşen Gider Bütçelerinin Toplam Gider Bütçesine Oranı
+    </p>
+    <form ng-submit="Rapor3()">
+    <div>
+        <ul data-role="listview" data-style="inset" style="font-size:14px">
+        <li><label>Yıl <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+        <li>
+            <div class="buttonArea">
+                <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor3()" value="Rapor Oluştur" />
+            </div>
+        </li>
+        </ul>
+    </div>
+    </form>
+     <div class="chart-wrapper">
+        <div id="rapor3-chart"></div>
+    </div>
+    <ul data-role="listview" data-style="inset" data-type="group" style="font-size:14px">
+        <li ng-repeat="r in Rapor3Sonuc" class="km-group-container">
+            <div class="km-group-title">{{r.Aciklama}}</div>
+            <ul class="km-list" style="font-size:13px">
+                <li>Harcama : <span class="sales-down">{{r.Harcama | number}}</span></li>
+                <li>Oran : <span class="value">{{r.Oran}}</span></li>
+            </ul>
+        </li>
+     </ul>
+</div>
+<div data-role="view" id="rapor4" data-title="Müdürlük Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
+    <p class="alert alert-info text-center" style="font-size:13px">
+        Müdürlük Bazında Gerçekleşen Personel Giderlerinin Toplam Gelir Bütçesine Oranı
+    </p>
+    <form ng-submit="Rapor4()">
+    <div>
+        <ul data-role="listview" data-style="inset" style="font-size:14px">
+        <li><label>Yıl <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+        <li>
+            <div class="buttonArea">
+                <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor4()" value="Rapor Oluştur" />
+            </div>
+        </li>
+        </ul>
+    </div>
+    </form>
+     <div class="chart-wrapper">
+        <div id="rapor4-chart"></div>
+    </div>
+    <ul data-role="listview" data-style="inset" data-type="group" style="font-size:15px">
+        <li ng-repeat="r in Rapor4Sonuc" class="km-group-container">
+            <div class="km-group-title">{{r.Aciklama}}</div>
+            <ul class="km-list" style="font-size:13px">
+                <li>Harcama : <span class="sales-down">{{r.Harcama | number:2}}</span></li>
+                <li>Bütçe : <span class="sales-up">{{r.Butce | number:2}}</span></li>
+                <li>Oran : <span class="value"><strong>% {{r.Oran | number:2}}</strong></span></li>
+            </ul>
+        </li>
+     </ul>
+</div>
+<div data-role="view" id="rapor5" data-title="Müdürlük Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
+    <p class="alert alert-info text-center" style="font-size:12px">
+        Müdürlük Bazında Gerçekleşen Gider Bütçelerinin Gerçekleşen Gider Bütçelerine Oranı
+    </p>
+    <form ng-submit="Rapor5()">
+    <div>
+        <ul data-role="listview" data-style="inset" style="font-size:14px">
+        <li><label>Yıl <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+        <li>
+            <div class="buttonArea">
+                <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor5()" value="Rapor Oluştur" />
+            </div>
+        </li>
+        </ul>
+    </div>
+    </form>
+     <div class="chart-wrapper">
+        <div id="rapor5-chart"></div>
+    </div>
+    <ul data-role="listview" data-style="inset" data-type="group" style="font-size:15px">
+        <li ng-repeat="r in Rapor5Sonuc" class="km-group-container">
+            <div class="km-group-title">{{r.Aciklama}}</div>
+            <ul class="km-list" style="font-size:13px">
+                <li>Bütçe : <span class="sales-up">{{r.Butce | number:0}}</span></li>
+                <li>Harcama : <span class="sales-down">{{r.Harcama | number:0}}</span></li>
+                <li>Oran : <span class="value">% {{r.Oran | number:0}}</span></li>
+            </ul>
+        </li>
+     </ul>
+</div>
+<div data-role="view" id="rapor6" data-title="Gelir Bütçesi Raporları" data-layout="mobile-tabstrip">
+    <p class="alert alert-info text-center" style="font-size:13px">
+        Hazırlanan Gelir Bütçesinin Gerçekleşen Gelir Bütçesine Oranı
+    </p>
+    <form ng-submit="Rapor6()">
+    <div>
+        <ul data-role="listview" data-style="inset">
+        <li><label>Başlangıç Yılı <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+        <li><label>Bitiş Yılı <select data-ng-options="o for o in Yillar" data-ng-model="sorguBitisYil"></select></label></li>
+        <li>
+            <div class="buttonArea">
+                <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor6()" value="Rapor Oluştur" />
+            </div>
+        </li>
+        </ul>
+    </div>
+    </form>
+     <div class="chart-wrapper">
+        <div id="rapor6-chart"></div>
+    </div>
+    <ul data-role="listview" data-style="inset" data-type="group" style="font-size:17px">
+        <li ng-repeat="r in Rapor6Sonuc" class="km-group-container">
+            <div class="km-group-title">{{r.Yil}}</div>
+            <ul class="km-list" style="font-size:12px">
+                <li>Tahsilat : <span class="sales-up">{{r.Tahsilat | number:2}}</span></li>
+                <li>Bütçe : <span class="sales-down">{{r.Butce | number:2}}</span></li>
+                <li>Oran : <span class="value"> % {{r.Oran | number:2}}</span></li>
+            </ul>
+        </li>
+     </ul>
+</div>            
+<div data-role="view" id="rapor7" data-title="Tahsilat Bilgileri" data-layout="mobile-tabstrip">
+    <p class="alert alert-info text-center" style="font-size:13px">
+    Tahsildar Bazında Yapılan Tahsilat Bilgisi
+    </p>
+    <form ng-submit="Rapor7()">
+    <div>
+        <ul data-role="listview" data-style="inset">
+        <li><label>Başlangıç Yılı <input type="date" data-ng-model="BaslangicYil"/></label></li>
+        <li><label>Bitiş Yılı <input type="date" data-ng-model="BitisYil"/></label></li>
+        <li>
+            <div class="buttonArea">
+                <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor7()" value="Rapor Oluştur" />
+            </div>
+        </li>
+        </ul>
+    </div>
+    </form>
+     <div class="chart-wrapper">
+        <div id="rapor7-chart"></div>
+    </div>
+    <ul data-role="listview" data-style="inset" data-type="group" style="font-size:15px">
+        <li ng-repeat="r in Rapor7Sonuc" class="km-group-container">
+            <div class="km-group-title">{{r.IslemTipiAdi}}</div>
+            <ul class="km-list" style="font-size:13px">
+                <li>Tutar : <span class="sales-up">{{r.IslemTipiTahsilatTutari}}</span></li>
+            </ul>
+        </li>
+     </ul>
+</div>
+<div data-role="view" id="rapor8" data-title="Tahsilat Bilgileri" data-layout="mobile-tabstrip">
+    <p class="alert alert-info text-center" style="font-size:13px">
+    Gelir Türü Bazında Yapılan Tahsilat Bilgisi
+    </p>
+    <form ng-submit="Rapor8()">
+    <div>
+        <ul data-role="listview" data-style="inset">
+        <li><label>Başlangıç Yılı <input type="date" data-ng-model="BaslangicYil"/></label></li>
+        <li><label>Bitiş Yılı <input type="date" data-ng-model="BitisYil"/></label></li>
+        <li>
+            <div class="buttonArea">
+                <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor8()" value="Rapor Oluştur" />
+            </div>
+        </li>
+        </ul>
+    </div>
+    </form>
+    <div class="chart-wrapper">
+        <div id="rapor8-chart"></div>
+    </div>
+    <ul data-role="listview" data-style="inset" data-type="group" style="font-size:15px">
+        <li ng-repeat="r in Rapor8Sonuc" class="km-group-container">
+            <div class="km-group-title">{{r.GelirAdi}}</div>
+            <ul class="km-list" style="font-size:13px">
+                <li>Tutar : <span class="sales-up">{{r.Tutar | number:2}}</span></li>
+            </ul>
+        </li>
+     </ul>
+</div>
+<div data-role="view" id="rapor9" data-title="Muhasebe Bilgileri" data-layout="mobile-tabstrip">
+    <p class="alert alert-info text-center" style="font-size:13px">
+        Banka Durum Bilgisi
+    </p>
+    <form ng-submit="Rapor9()">
+    <div>
+        <ul data-role="listview" data-style="inset">
+        <li><label>Tarih <input type="date" data-ng-model="BaslangicYil"/></label></li>
+        <li>
+            <div class="buttonArea">
+                <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor9()" value="Rapor Oluştur" />
+            </div>
+        </li>
+        </ul>
+    </div>
+    </form>
+    <ul data-role="listview" data-style="inset" data-type="group" style="font-size:14px">
+        <li ng-repeat="r in Rapor9Sonuc" class="km-group-container">
+            <div class="km-group-title">{{r.Aciklama}}</div>
+            <ul class="km-list" style="font-size:13px">
+                <li>Nakit : <span class="sales-up">{{r.BankaDurumu | number:2}}</span></li>
+                <li>Çek : <span class="sales-up">{{r.CekDurmu | number:2}}</span></li>
+                <li>Toplam : <span class="sales-up">{{r.BankaBakiye | number:2}}</span></li>
+            </ul>
+        </li>
+     </ul>
+</div>
+<!--
+<div data-role="view" id="tabstrip-cikis" data-title="Çıkış" data-layout="mobile-tabstrip">
+    <p class="alert alert-success text-center">Çıkış Yapılıyor..</p>
+</div>
+-->
+<div data-role="layout" data-id="mobile-tabstrip">
+    <header data-role="header">
+        <div data-role="navbar">
+            <!--<a class="nav-button" data-align="left" data-role="backbutton">Back</a>-->
+            <span data-role="view-title"></span>
+            
+        </div>
+    </header>
+
+    <p>TabStrip</p>
+
+    <div data-role="footer">
+        <div id="tabstrip" data-role="tabstrip" data-select="onSelect">
+            <a id="randevu" href="#tabstrip-randevular" data-icon="recents">Randevular</a>
+            <a id="arama" href="#tabstrip-aramalar" data-icon="phone">Aramalar</a>
+            <a href="#tabstrip-raporlar" data-icon="bookmarks">Raporlar</a>
+            <!--<a href="#tabstrip-cikis" id="cikis" data-tap="Cikis" data-icon="more">Çıkış</a>-->
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

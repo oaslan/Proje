@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="styles/bootstrap.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.bootstrap.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
+    <link href="styles/main.css" rel="stylesheet" />
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8" src="kendo/js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="kendo/js/kendo.mobile.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/app.js"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/login.js"></script>
+</head>
+<body onload="onLoad()">
+    <!--Login-->
+    <div id="tabstrip-login"
+        data-role="view"
+        data-title="Kullanıcı Girişi"
+        data-model="app.loginService.viewModel">
+        
+        <div class="view-content">
+            <form data-bind="events: { keyup: checkEnter }">
+                <ul data-role="listview" data-style="inset" data-bind="invisible: isLoggedIn">
+                    <li>
+                        <label>
+                            Kullanıcı Adı
+                                <input type="text" data-bind="value: Kullanici"/>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            Şifre
+                                <input type="password" data-bind="value: Sifre" />
+                        </label>
+                    </li>
+                    <li>
+                        <div class="buttonArea">
+                            <input type="submit" id="login" data-role="button" class="btn btn-primary btn-block" data-bind="click: onLogin, invisible: isLoggedIn" value="Giriş" />
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+
+    </div>
+
+    <!--Layout-->
+    <div data-role="layout" data-id="tabstrip-layout">
+        <!--Header-->
+        <div data-role="header">
+            <div data-role="navbar">
+                <span data-role="view-title"></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

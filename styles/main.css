@@ -1,0 +1,10 @@
+.sales-down,
+.sales-hold,
+.sales-up,
+.value {
+    float: right;
+}
+.sales-up { color: green; }
+.sales-down { color: red; }
+.sales-hold { color: blue; }
+.value { color: #666; }
