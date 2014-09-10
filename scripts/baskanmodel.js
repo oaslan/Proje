@@ -728,11 +728,26 @@ $(function(){
    token = window.localStorage.getItem("accessToken");
    if(token === undefined || token === null || token === "")
         window.location="index.html";
-    scope = angular.element(document.getElementById("belediyeCTRL")).scope();
+   scope = angular.element(document.getElementById("belediyeCTRL")).scope();
+
+    /*
     var now = new Date();
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
     var today = now.getFullYear() + "-" + (month) + "-" + (day);
+    */
+
+    var now = new Date();
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = (day) + "/" + (month) + "/" + now.getFullYear();
+
+    // create DatePicker from input HTML element
+    $("#Tarih").kendoDatePicker({
+        value: today,
+        format: "dd/mm/yyyy"
+    });
+
     
     //Sorgu Başlangıç-Bitiş yılları -5
     var yillar = Array();
@@ -797,7 +812,7 @@ function onSelect(e){
     else if(item.attr("id") === "randevu")
     {
         $("#tarihList").prependTo("#tabstrip-randevular");
-		fetchData(token);
+        fetchData(token);
     }
     else if(item.attr("id") === "cikis")
     {
