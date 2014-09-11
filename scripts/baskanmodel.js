@@ -745,7 +745,7 @@ $(function(){
     // create DatePicker from input HTML element
     $("#Tarih").kendoDatePicker({
         value: today,
-        format: "dd/mm/yyyy"
+        format: "dd/MM/yyyy"
     });
 
     
