@@ -19,8 +19,8 @@
             }
             $.ajax({
 	            type: "POST",
-                //url: app.endpoints.login,
-	            url: "http://localhost/BelBaskan/api/Auth/Login",
+                url: app.endpoints.login,
+	            //url: "http://localhost/BelBaskan/api/Auth/Login",
 	            data: { "Kullanici" : Kullanici, "Sifre" : Sifre },
 	            beforeSend: function () { app.application.showLoading(); },
 	            complete: function () {  app.application.hideLoading(); },
