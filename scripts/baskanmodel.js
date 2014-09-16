@@ -1,10 +1,5 @@
 var scope, token;
 app = window.app = window.app || {};
-
-$(function () {
-    kendo.culture('tr-TR');
-});
-
 angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', function ($scope) {
     //Arayan + Randevu
     $scope.Tarih = "2014-02-03";
@@ -735,25 +730,23 @@ $(function(){
         window.location="index.html";
    scope = angular.element(document.getElementById("belediyeCTRL")).scope();
 
+    /*
+    var now = new Date();
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear() + "-" + (month) + "-" + (day);
+    */
 
     var now = new Date();
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
     var today = (day) + "/" + (month) + "/" + now.getFullYear();
 
-    //DateTimePicker : Seçilecek tarih çizelgesini oluşturur.
-    //var today = new Date();
-    //today = new Date(today);
-
+    // create DatePicker from input HTML element
     $("#Tarih").kendoDatePicker({
         value: today,
         format: "dd/MM/yyyy"
-
     });
-
-    //startDate.value(today);
-    today.setDate(today.getDate() + 1);
-    //DateTimePicker : end
 
     
     //Sorgu Başlangıç-Bitiş yılları -5
@@ -786,7 +779,7 @@ function fetchData(accessToken) {
         $.ajax({
             type: "POST",
             data: { 'accessToken': accessToken, Tarih: getDate() },
-            url: app.endpoints.baskanView, 
+            url: app.endpoints.baskanView,
             dataType: "json",
             beforeSend: function () { app.application.showLoading(); },
             complete: function () {  app.application.hideLoading(); },
