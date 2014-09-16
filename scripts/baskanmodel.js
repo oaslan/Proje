@@ -732,13 +732,14 @@ $(function(){
 
 
     // 16,09,2014 DateTimePicker -----------------------------------------------
-    /*
+    
     var now = new Date();
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
     var today = now.getFullYear() + "-" + (month) + "-" + (day);
     
 
+    /* 
     var now = new Date();
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
@@ -752,8 +753,9 @@ $(function(){
     */
     // 16,09,2014 DateTimePicker -----------------------------------------------END
 
+
    $(function () {
-       kendo.culture('tr-TR');
+        kendo.culture('tr-TR');
    });
 
    $(document).ready(function () {
@@ -761,19 +763,16 @@ $(function(){
        var today = new Date();
        today = new Date(today);
 
-       $("#startDate").kendoDatePicker({
+       $("#Tarih").kendoDatePicker({
            value: today,
-           format: "dd/MM/yyyy"
+           format: "dd/MM/yyyy",
        });
 
-       Tarih.value(today);
+       //Tarih.value(today);
        today.setDate(today.getDate() + 1);
    });
 
 
-
-
-    
     //Sorgu Başlangıç-Bitiş yılları -5
     var yillar = Array();
     scope.$apply(function(){
