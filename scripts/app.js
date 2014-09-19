@@ -4,6 +4,7 @@
 
     
     app.application = new kendo.mobile.Application(document.body, { layout: "tabstrip-layout", loading: "<h1>Yükleniyor</h1>", skin: "flat" });
+    /*
     app.endpoints = {
         login: "http://155.223.207.39/BelBaskan/api/Auth/Login",
         baskanView: "http://155.223.207.39/BelBaskan/api/Auth/BaskanView",
@@ -18,6 +19,28 @@
         Rapor8: "http://155.223.207.39/BelBaskan/api/Auth/GelirTuruTahsilatBilgisiSorgula",
         Rapor9: "http://155.223.207.39/BelBaskan/api/Auth/BankaDurumBilgisiSorgula"
     };
+    */
+
+    app.endpoints = {
+        login: "http://localhost/BelBaskan/api/Auth/Login",
+        baskanView: "http://localhost/BelBaskan/api/Auth/BaskanView",
+        Cikis: "http://localhost/BelBaskan/api/Auth/Cikis",
+        Rapor1: "http://localhost/BelBaskan/api/Auth/GiderButceOranBilgisiSorgula",
+        Rapor2: "http://localhost/BelBaskan/api/Auth/MudurlukHazirlananGiderButceOranBilgisiSorgula",
+        Rapor3: "http://localhost/BelBaskan/api/Auth/MudurlukGerceklesenGiderButceOranBilgisiSorgula",
+        Rapor4: "http://localhost/BelBaskan/api/Auth/MudurlukPersonelGideriToplamGelirButcesiOranBilgisiSorgula",
+        Rapor5: "http://localhost/BelBaskan/api/Auth/MudurlukGerceklesenGiderMudurlukButceOranBilgisiSorgula",
+        Rapor6: "http://localhost/BelBaskan/api/Auth/GelirButceOranBilgisiSorgula",
+        Rapor7: "http://localhost/BelBaskan/api/Auth/TahsildarTahsilatBilgisiSorgula",
+        Rapor8: "http://localhost/BelBaskan/api/Auth/GelirTuruTahsilatBilgisiSorgula",
+        Rapor9: "http://localhost/BelBaskan/api/Auth/BankaDurumBilgisiSorgula",
+
+        randevuDetayAciklama: "http://localhost/BelBaskan/api/Auth/RandevuDetayAciklamaEkle",
+        randevuDetay: "http://localhost/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula"
+        
+    };
+
+
 })(window);
 function onLoad()
 { 

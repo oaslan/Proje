@@ -38,39 +38,48 @@
     <!--Oğuz ASLAN Additional Style Settings-->
     <style>
         .datePicker {
-            font-size: 12px;
+            font-size: 13px;
             font-family: Arial, Helvetica, sans-serif;
+            float: right;
         }
     </style>
     <script src="http://cdn.kendostatic.com/2013.2.716/js/cultures/kendo.culture.tr-TR.min.js" type="text/javascript"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/angular-kendo.js"></script>
     
 </head>
 <body id="belediyeCTRL" ng-controller="belediyeCTRL" onload="onLoad()">
 
 
     <div data-role="view" id="tabstrip-randevular" data-title="Randevular" data-layout="mobile-tabstrip">
-
         <ul id="tarihList" data-role="listview" data-style="inset">
-            <li><label>Tarih<input type="date" id="Tarih" class="datePicker" ng-model="Tarih"></label></li>
+            <li><label>Tarih</label> <input type="date" id="Tarih" class="datePicker" ng-model="Tarih"></li>
         </ul>
 
-        
-
-        <ul data-role="listview" data-style="inset">
+        <ul data-role="listview" data-inset="true">
             <li ng-show="Randevular.length < 1 || Randevular == null">Randevu Kaydı Yok</li>
             <li ng-repeat="r in Randevular">
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="label label-primary">{{r.BaslamaSaati}}</span>
+                <a onclick="RandevuClick(this)">
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="label label-primary">{{r.BaslamaSaati}}</span>
+                        </div>
+                        <div class="media-body">
+                            <p class="media-heading" style="font-size:15px"><strong>{{r.Yeri}}</strong></p>
+                            <p style="font-size:13px">{{ r.Konu }}</p>
+                            <p style="font-size:13px" id="SecilenRandevuId" >{{ r.Id }}</p>
+                        </div>
                     </div>
-                    <div class="media-body">
-                        <p class="media-heading" style="font-size:15px"><strong>{{r.Yeri}}</strong></p>
-                        <p style="font-size:13px">{{ r.Konu }}</p>
-                    </div>
-                </div>
+                </a>
             </li>
         </ul>
+
     </div>
+
+
+
+    
+
+
 
     <div data-role="view" id="tabstrip-aramalar" data-title="Aramalar" data-layout="mobile-tabstrip">
         <ul data-role="listview" data-style="inset">
@@ -114,6 +123,7 @@
                 </ul>
             </li>
             <li>
+            <li>
                 Tahsilat Bilgileri
                 <ul>
                     <li><a href="#rapor7">Tahsildar Bazında Yapılan Tahsilat Bilgisi</a></li>
@@ -128,6 +138,62 @@
             </li>
         </ul>
     </div>
+
+
+
+
+    <div data-role="view" id="RandevuDetay" data-title="Randevu Detay" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Not Ekle
+        </p>
+
+        <form>
+            <div>
+                <ul data-role="listview" data-style="inset">
+                    <li ng-repeat="r in SecilenRandevu" class="km-group-container">
+                        <div class="km-group-title">{{r.Yil}}</div>
+                        <ul class="km-list" style="font-size:12px">
+                            <li>
+                                <div style="float:left; width:30%">Id : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-up">{{r.Id}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%">Randevu Yeri : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-up">{{r.Yeri}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%">Başlama Saati : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-down">{{r.BaslamaSaati}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:20%">Konusu : </div>
+                                <div style="float:right; width:80%; text-align:right"><span class="value">{{r.Konu}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%">Açıklama : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="value" id="RandevuAciklamaData" text="{{r.Aciklama}}">{{r.Aciklama}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%" class="k-input">Açıklama Ekle: </div>
+                                <input type="text" name="enter" style="float:right; width:70%;" class="enter" id="AciklamaId" value="" />
+                            </li>
+                            <li>
+                                <div class="buttonArea">
+                                    <input type="button" value="Kaydet" class="btn btn-primary btn-block" onclick="RandevuAciklamaEkle();" />
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+
+
+
+
+
     <div data-role="view" id="rapor1" data-title="Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
         <p class="alert alert-info text-center" style="font-size:13px">
             Hazırlanan Gider Bütçesinin Gerçekleşen Gider Bütçesine Oranı
@@ -159,7 +225,6 @@
             </li>
         </ul>
     </div>
-
     <div data-role="view" id="rapor2" data-title="Müdürlük Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
         <p class="alert alert-info text-center" style="font-size:13px">
             Müdürlük Bazında Hazırlanan Gider Bütçelerinin Toplam Gider Bütçesine Oranı
@@ -404,7 +469,6 @@
             <div data-role="navbar">
                 <!--<a class="nav-button" data-align="left" data-role="backbutton">Back</a>-->
                 <span data-role="view-title"></span>
-
             </div>
         </header>
         <p>TabStrip</p>

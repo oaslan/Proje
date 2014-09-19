@@ -1,15 +1,18 @@
 var scope, token;
+var RandevuId;
 app = window.app = window.app || {};
 angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', function ($scope) {
     //Arayan + Randevu
     $scope.Tarih = "2014-02-03";
     $scope.Arayanlar = [];
     $scope.Randevular = [];
+    $scope.SecilenRandevu = [];
     
     //Rapor 1
     $scope.Yillar;
     $scope.sorguBaslangicYil;
     $scope.sorguBitisYil;
+
     $scope.GiderButceOranBilgisiSorguSonuc = [];
     $scope.GiderButceOranBilgisiForm = function(){
         if($scope.sorguBaslangicYil.length < 1 || $scope.sorguBitisYil.length < 1)
@@ -313,6 +316,7 @@ angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', functi
         
     };
 }]);
+
 var RaporChart1 = function(data)
 {            
             var harcamaList = Array();
@@ -700,6 +704,7 @@ var RaporChart8 = function(data)
         }
     });
 };
+
 $(function(){
     $.ajaxSetup({
         beforeSend: function () { app.application.showLoading(); },
@@ -737,22 +742,6 @@ $(function(){
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
     var today = now.getFullYear() + "-" + (month) + "-" + (day);
-    
-
-    /* 
-    var now = new Date();
-    var day = ("0" + now.getDate()).slice(-2);
-    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-    var today = (day) + "/" + (month) + "/" + now.getFullYear();
-
-    // create DatePicker from input HTML element
-    $("#Tarih").kendoDatePicker({
-        value: today,
-        format: "dd/MM/yyyy"
-    });
-    */
-    // 16,09,2014 DateTimePicker -----------------------------------------------END
-
 
    $(function () {
         kendo.culture('tr-TR');
@@ -792,7 +781,75 @@ $(function(){
     $(document).on("change","#Tarih",function(){
         fetchData(token);
     });
+    //console.log(document);
 });
+
+function RandevuClick(value) {
+
+    //console.log($("#tabstrip-randevulaaccessTokenible"));
+    token = window.localStorage.getItem("accessToken");
+    if (token === undefined || token === null || token === "")
+        window.location = "index.html";
+    scope = angular.element(document.getElementById("belediyeCTRL")).scope();
+
+    RandevuId = $(value).find("#SecilenRandevuId")[0].innerHTML;
+    //console.log(RandevuId);
+
+    $.ajax({
+        type: "POST",
+        data: { 'accessToken': token, SecilenRandevuId: RandevuId },
+        url: app.endpoints.randevuDetay,
+        dataType: "json",
+        crossDomain: true,
+        success: function (result) {
+            //console.log(result);
+            if (result != null) {
+                scope.$apply(function () {
+                    scope.SecilenRandevu = result.SecilenRandevu;
+                    window.location.href = "#RandevuDetay";
+                });
+                
+            }
+            else {
+                window.localStorage.removeItem("accessToken");
+                window.location = "index.html";
+            }
+        }
+    });
+};
+
+
+
+function RandevuAciklamaEkle() {
+    var BaskanAciklama = document.getElementById('AciklamaId').value;
+    var RandevuAciklama = document.getElementById('RandevuAciklamaData').innerHTML;
+    console.log(BaskanAciklama);
+    console.log(RandevuId);
+    console.log(RandevuAciklama);
+
+    $.ajax({
+        type: "POST",
+        data: { 'accessToken': token, SecilenRandevuId: RandevuId, BaskanAciklamasi: BaskanAciklama, MevcutRandevuAciklama: RandevuAciklama },
+        url: app.endpoints.randevuDetayAciklama,
+        dataType: "json",
+        crossDomain: true,
+        success: function (result) {
+            console.log(result);
+            if (result != null) {
+                scope.$apply(function () {
+                    scope.SecilenRandevu = result.SecilenRandevu;
+                    window.location.href = "#RandevuDetay";
+                });
+
+            }
+            else {
+                window.localStorage.removeItem("accessToken");
+                window.location = "index.html";
+            }
+        }
+    });
+};
+
 
 function getDate() {
     return scope.Tarih.split("-").reverse().join(".");
