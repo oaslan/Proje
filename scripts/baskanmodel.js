@@ -1,5 +1,6 @@
 var scope, token;
 var RandevuId;
+var ArayanId;
 app = window.app = window.app || {};
 angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', function ($scope) {
     //Arayan + Randevu
@@ -7,6 +8,7 @@ angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', functi
     $scope.Arayanlar = [];
     $scope.Randevular = [];
     $scope.SecilenRandevu = [];
+    $scope.SecilenArayan = []
     
     //Rapor 1
     $scope.Yillar;
@@ -818,29 +820,30 @@ function RandevuClick(value) {
     });
 };
 
+function ArayanClick(value)
+{
+    //console.log($("#tabstrip-randevulaaccessTokenible"));
+    token = window.localStorage.getItem("accessToken");
+    if (token === undefined || token === null || token === "")
+        window.location = "index.html";
+    scope = angular.element(document.getElementById("belediyeCTRL")).scope();
 
-
-function RandevuAciklamaEkle() {
-    var BaskanAciklama = document.getElementById('AciklamaId').value;
-    var RandevuAciklama = document.getElementById('RandevuAciklamaData').innerHTML;
-    console.log(BaskanAciklama);
-    console.log(RandevuId);
-    console.log(RandevuAciklama);
+    ArayanId = $(value).find("#SecilenArayanId")[0].innerHTML;
+    //console.log(ArayanId);
 
     $.ajax({
         type: "POST",
-        data: { 'accessToken': token, SecilenRandevuId: RandevuId, BaskanAciklamasi: BaskanAciklama, MevcutRandevuAciklama: RandevuAciklama },
-        url: app.endpoints.randevuDetayAciklama,
+        data: { 'accessToken': token, SecilenArayanId: ArayanId },
+        url: app.endpoints.arayanDetay,
         dataType: "json",
         crossDomain: true,
         success: function (result) {
-            console.log(result);
+            //console.log(result);
             if (result != null) {
                 scope.$apply(function () {
-                    scope.SecilenRandevu = result.SecilenRandevu;
-                    window.location.href = "#RandevuDetay";
+                    scope.SecilenArayan = result.SecilenArayan;
+                    window.location.href = "#ArayanDetay";
                 });
-
             }
             else {
                 window.localStorage.removeItem("accessToken");
@@ -850,6 +853,64 @@ function RandevuAciklamaEkle() {
     });
 };
 
+function RandevuAciklamaEkle() {
+    var BaskanAciklama = document.getElementById('AciklamaId').value;
+    var RandevuAciklama = document.getElementById('RandevuAciklamaData').innerHTML;
+    //console.log(BaskanAciklama);
+    //console.log(RandevuId);
+    //console.log(RandevuAciklama);
+
+    $.ajax({
+        type: "POST",
+        data: { 'accessToken': token, SecilenRandevuId: RandevuId, BaskanAciklamasi: BaskanAciklama, MevcutRandevuAciklama: RandevuAciklama },
+        url: app.endpoints.randevuDetayAciklama,
+        dataType: "json",
+        crossDomain: true,
+        success: function (result) {
+            //console.log(result);
+            if (result != null) {
+                scope.$apply(function () {
+                    scope.SecilenRandevu = result.SecilenRandevu;
+                    window.location.href = "#RandevuDetay";
+                });
+            }
+            else {
+                window.localStorage.removeItem("accessToken");
+                window.location = "index.html";
+            }
+        }
+    });
+};
+
+function ArayanSonucEkle()
+{
+    var BaskanSonuc = document.getElementById('SonucId').value;
+    var ArayanSonuc = document.getElementById('ArayanSonucData').innerHTML;
+    //console.log(BaskanSonuc);
+    //console.log(ArayanId);
+    //console.log(ArayanSonuc);
+
+    $.ajax({
+        type: "POST",
+        data: { 'accessToken': token, SecilenArayanId: ArayanId, BaskanSonuc: BaskanSonuc, MevcutArayanSonuc: ArayanSonuc },
+        url: app.endpoints.arayanDetayAciklama,
+        dataType: "json",
+        crossDomain: true,
+        success: function (result) {
+            //console.log(result);
+            if (result != null) {
+                scope.$apply(function () {
+                    scope.SecilenArayan = result.SecilenArayan;
+                    window.location.href = "#ArayanDetay";
+                });
+            }
+            else {
+                window.localStorage.removeItem("accessToken");
+                window.location = "index.html";
+            }
+        }
+    });
+};
 
 function getDate() {
     return scope.Tarih.split("-").reverse().join(".");

@@ -4,10 +4,12 @@
 
     
     app.application = new kendo.mobile.Application(document.body, { layout: "tabstrip-layout", loading: "<h1>Yükleniyor</h1>", skin: "flat" });
-    /*
+
     app.endpoints = {
         login: "http://155.223.207.39/BelBaskan/api/Auth/Login",
         baskanView: "http://155.223.207.39/BelBaskan/api/Auth/BaskanView",
+        arayanDetay: "http://155.223.207.39/BelBaskan/api/Auth/ArayanDetayBilgisiSorgula",
+        arayanDetayAciklama: "http://155.223.207.39/BelBaskan/api/Auth/ArayanDetaySonucEkle",
         Cikis: "http://155.223.207.39/BelBaskan/api/Auth/Cikis",
         Rapor1: "http://155.223.207.39/BelBaskan/api/Auth/GiderButceOranBilgisiSorgula",
         Rapor2: "http://155.223.207.39/BelBaskan/api/Auth/MudurlukHazirlananGiderButceOranBilgisiSorgula",
@@ -17,13 +19,18 @@
         Rapor6: "http://155.223.207.39/BelBaskan/api/Auth/GelirButceOranBilgisiSorgula",
         Rapor7: "http://155.223.207.39/BelBaskan/api/Auth/TahsildarTahsilatBilgisiSorgula",
         Rapor8: "http://155.223.207.39/BelBaskan/api/Auth/GelirTuruTahsilatBilgisiSorgula",
-        Rapor9: "http://155.223.207.39/BelBaskan/api/Auth/BankaDurumBilgisiSorgula"
-    };
-    */
+        Rapor9: "http://155.223.207.39/BelBaskan/api/Auth/BankaDurumBilgisiSorgula",
 
+
+        randevuDetayAciklama: "http://155.223.207.39/BelBaskan/api/Auth/RandevuDetayAciklamaEkle",
+        randevuDetay: "http://155.223.207.39/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula"
+    };
+    /*
     app.endpoints = {
         login: "http://localhost/BelBaskan/api/Auth/Login",
         baskanView: "http://localhost/BelBaskan/api/Auth/BaskanView",
+        arayanDetay: "http://localhost/BelBaskan/api/Auth/ArayanDetayBilgisiSorgula",
+        arayanDetayAciklama: "http://localhost/BelBaskan/api/Auth/ArayanDetaySonucEkle",
         Cikis: "http://localhost/BelBaskan/api/Auth/Cikis",
         Rapor1: "http://localhost/BelBaskan/api/Auth/GiderButceOranBilgisiSorgula",
         Rapor2: "http://localhost/BelBaskan/api/Auth/MudurlukHazirlananGiderButceOranBilgisiSorgula",
@@ -35,11 +42,11 @@
         Rapor8: "http://localhost/BelBaskan/api/Auth/GelirTuruTahsilatBilgisiSorgula",
         Rapor9: "http://localhost/BelBaskan/api/Auth/BankaDurumBilgisiSorgula",
 
+        
         randevuDetayAciklama: "http://localhost/BelBaskan/api/Auth/RandevuDetayAciklamaEkle",
         randevuDetay: "http://localhost/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula"
-        
     };
-
+    */
 
 })(window);
 function onLoad()

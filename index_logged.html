@@ -66,39 +66,36 @@
                         <div class="media-body">
                             <p class="media-heading" style="font-size:15px"><strong>{{r.Yeri}}</strong></p>
                             <p style="font-size:13px">{{ r.Konu }}</p>
-                            <p style="font-size:13px" id="SecilenRandevuId" >{{ r.Id }}</p>
+                            <p style="font-size:13px" id="SecilenRandevuId" ng-show="false">{{ r.Id }}</p>
                         </div>
                     </div>
                 </a>
             </li>
         </ul>
-
     </div>
-
-
-
-    
-
-
 
     <div data-role="view" id="tabstrip-aramalar" data-title="Aramalar" data-layout="mobile-tabstrip">
         <ul data-role="listview" data-style="inset">
             <li ng-show="Arayanlar.length < 1 || Arayanlar == null">Arama Kaydı Yok</li>
             <li ng-repeat="a in Arayanlar">
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="label label-primary">{{a.AramaSaati}}</span>
+                <a onclick="ArayanClick(this)">
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="label label-primary">{{a.AramaSaati}}</span>
+                        </div>
+                        <div class="media-body">
+                            <p class="media-heading" style="font-size:15px"><strong>{{a.ArayanAdi}}</strong></p>
+                            <p style="font-size:11px">{{ a.ArayanSoyadi }}</p>
+                            <p ng-show="a.Konu.length > 0" style="font-size:12px"><strong>Konu :</strong> {{ a.Konu }}</p>
+                            <p ng-show="a.Sonuc.length > 0" style="font-size:12px"><strong>Sonuç :</strong> {{ a.Sonuc }}</p>
+                            <p style="font-size:12px" id="SecilenArayanId" ng-show="false">{{ a.Id }}</p>
+                        </div>
                     </div>
-                    <div class="media-body">
-                        <p class="media-heading" style="font-size:15px"><strong>{{a.ArayanAdi}}</strong></p>
-                        <p style="font-size:11px">{{ a.ArayanSoyadi }}</p>
-                        <p ng-show="a.Konu.length > 0" style="font-size:12px"><strong>Konu :</strong> {{ a.Konu }}</p>
-                        <p ng-show="a.Sonuc.length > 0" style="font-size:12px"><strong>Sonuç :</strong> {{ a.Sonuc }}</p>
-                    </div>
-                </div>
+                </a>
             </li>
         </ul>
     </div>
+
     <div data-role="view" id="tabstrip-raporlar" data-title="Raporlar" data-layout="mobile-tabstrip">
         <ul data-role="listview" data-style="inset" data-type="group" style="font-size:13px">
             <li>
@@ -139,9 +136,6 @@
         </ul>
     </div>
 
-
-
-
     <div data-role="view" id="RandevuDetay" data-title="Randevu Detay" data-layout="mobile-tabstrip">
         <p class="alert alert-info text-center" style="font-size:13px">
             Not Ekle
@@ -151,9 +145,8 @@
             <div>
                 <ul data-role="listview" data-style="inset">
                     <li ng-repeat="r in SecilenRandevu" class="km-group-container">
-                        <div class="km-group-title">{{r.Yil}}</div>
                         <ul class="km-list" style="font-size:12px">
-                            <li>
+                            <li ng-show="false">
                                 <div style="float:left; width:30%">Id : </div>
                                 <div style="float:right; width:70%; text-align:right"><span class="sales-up">{{r.Id}}</span></div>
                             </li>
@@ -171,7 +164,7 @@
                             </li>
                             <li>
                                 <div style="float:left; width:30%">Açıklama : </div>
-                                <div style="float:right; width:70%; text-align:right"><span class="value" id="RandevuAciklamaData" text="{{r.Aciklama}}">{{r.Aciklama}}</span></div>
+                                <div style="float:right; width:70%; text-align:right"><span class="value" id="RandevuAciklamaData" ng-show="r.Aciklama.length > 0" text="{{r.Aciklama}}">{{r.Aciklama}}</span></div>
                             </li>
                             <li>
                                 <div style="float:left; width:30%" class="k-input">Açıklama Ekle: </div>
@@ -189,9 +182,55 @@
         </form>
     </div>
 
+    <div data-role="view" id="ArayanDetay" data-title="Arayan Detay" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Not Ekle
+        </p>
 
-
-
+        <form>
+            <div>
+                <ul data-role="listview" data-style="inset">
+                    <li ng-repeat="a in SecilenArayan" class="km-group-container">
+                        <ul class="km-list" style="font-size:12px;">
+                            <li ng-show="false">
+                                <div style="float:left; width:30%">Id : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-up">{{a.Id}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%">Arayan Adı Soyadı : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-up">{{a.ArayanAdi}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%">Ünvanı : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-up">{{a.ArayanSoyadi}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%">Arama Saati : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-down">{{a.AramaSaati}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:20%">Konu : </div>
+                                <div style="float:right; width:80%; text-align:right"><span class="value">{{a.Konu}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%">Sonuç : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="value" id="ArayanSonucData" ng-show="a.Sonuc.length > 0" text="{{a.Sonuc}}">{{a.Sonuc}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%" class="k-input">Sonuç Ekle: </div>
+                                <input type="text" name="enter" style="float:right; width:70%;" class="enter" id="SonucId" value="" />
+                            </li>
+                            <li>
+                                <div class="buttonArea">
+                                    <input type="button" value="Kaydet" class="btn btn-primary btn-block" onclick="ArayanSonucEkle();" />
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
 
 
     <div data-role="view" id="rapor1" data-title="Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
@@ -476,8 +515,8 @@
             <div id="tabstrip" data-role="tabstrip" data-select="onSelect">
                 <a id="randevu" href="#tabstrip-randevular" data-icon="recents">Randevular</a>
                 <a id="arama" href="#tabstrip-aramalar" data-icon="phone">Aramalar</a>
-                <a href="#tabstrip-raporlar" data-icon="bookmarks">Raporlar</a>
-                <!--<a href="#tabstrip-cikis" id="cikis" data-tap="Cikis" data-icon="more">Çıkış</a>-->
+                <!--<a href="#tabstrip-raporlar" data-icon="bookmarks">Raporlar</a>-->
+                <a href="#tabstrip-cikis" id="cikis" data-tap="Cikis" data-icon="more">Çıkış</a>
             </div>
         </div>
     </div>
