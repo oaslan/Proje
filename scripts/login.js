@@ -36,7 +36,6 @@
 	                else {
 	                /*navigator.notification.alert("Kullanıcı adı veya şifre hatası.",
                         function () { }, "Giriş Hatası", 'Tamam');*/
-	                    $("#hataText").text(d.mesaj);
 	                    alert(d.mesaj);
 	                }
 	            },

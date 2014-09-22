@@ -713,21 +713,28 @@ $(function(){
         complete: function () {  app.application.hideLoading(); },
         error: function(jqXHR, exception) {
             if (jqXHR.status === 0) {
-                navigator.notification.alert("Uygulama internet bağlantısı gerektirir.", function () {
+                /*navigator.notification.alert("Uygulama internet bağlantısı gerektirir.", function () {
             navigator.app.exitApp();
-        }, "Bağlantı Hatası", 'Tamam');
+        }, "Bağlantı Hatası", 'Tamam');*/
+                alert("Uygulama internet bağlantısı gerektirir.");
             } else if (jqXHR.status == 404) {
-                navigator.notification.alert("Servis noktası bulunamadı.",function () { }, "Bağlantı Hatası", 'Tamam');
+                //navigator.notification.alert("Servis noktası bulunamadı.",function () { }, "Bağlantı Hatası", 'Tamam');
+                alert("Servis noktası bulunamadı.");
             } else if (jqXHR.status >= 500) {
-              navigator.notification.alert("Serviste sunucu hatası.",function () { }, "Sistem Hatası", 'Tamam');
+                //navigator.notification.alert("Serviste sunucu hatası.",function () { }, "Sistem Hatası", 'Tamam');
+                alert("Serviste sunucu hatası.");
             } else if (exception === 'parsererror') {
-              navigator.notification.alert("Servisten dönen kayıt hatalı.",function () { }, "Sistem Hatası", 'Tamam');
+                //navigator.notification.alert("Servisten dönen kayıt hatalı.",function () { }, "Sistem Hatası", 'Tamam');
+                alert("Servisten dönen kayıt hatalı.");
             } else if (exception === 'timeout') {
-                navigator.notification.alert("İstek zaman aşımına uğradı.",function () { }, "Zaman aşımı", 'Tamam');
+                //navigator.notification.alert("İstek zaman aşımına uğradı.",function () { }, "Zaman aşımı", 'Tamam');
+                alert("İstek zaman aşımına uğradı.");
             } else if (exception === 'abort') {
-                navigator.notification.alert("İstek iptal edildi.",function () { }, "Sistem Hatası", 'Tamam');
+                //navigator.notification.alert("İstek iptal edildi.",function () { }, "Sistem Hatası", 'Tamam');
+                alert("İstek iptal edildi.");
             } else {
-                navigator.notification.alert("Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.",function () { }, "Bilinmeyen Hata", 'Tamam');
+                // navigator.notification.alert("Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.",function () { }, "Bilinmeyen Hata", 'Tamam');
+                alert("Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.");
             }
         }
     });
@@ -856,15 +863,14 @@ function ArayanClick(value)
 function RandevuAciklamaEkle() {
     var BaskanAciklama = document.getElementById('AciklamaId').value;
     var RandevuAciklama = document.getElementById('RandevuAciklamaData').innerHTML;
-    console.log(BaskanAciklama);
+    //console.log(BaskanAciklama);
     //console.log(RandevuId);
     //console.log(RandevuAciklama);
 
     if (BaskanAciklama.toString() == "" || BaskanAciklama == null ) {
-        /*navigator.notification.alert("Önce Açıklama Yazınız!",
-                 function () { }, "Veri Ekleme Hatası", 'Tamam');
-                 */
-        alert("Kaydet butonuna basmadan önce Açıklama ekleyiniz!");
+        /*navigator.notification.alert("Kaydet butonuna basmadan önce Açıklama Yazınız!",
+                 function () { }, "Veri Ekleme Hatası", 'Tamam');*/
+        alert("Kaydet butonuna basmadan önce Açıklama Yazınız!");
     }
     else {
         $.ajax({
@@ -900,7 +906,7 @@ function ArayanSonucEkle()
     //console.log(ArayanSonuc);
 
     if (BaskanSonuc.toString() == "" || BaskanSonuc == null) {
-        /*navigator.notification.alert("Önce Sonuç Yazınız!",
+       /* navigator.notification.alert("Kaydet butonuna basmadan önce Sonuç Yazınız!",
                  function () { }, "Veri Ekleme Hatası", 'Tamam');*/
         alert("Kaydet butonuna basmadan önce Sonuç Yazınız!");
     }
@@ -955,8 +961,8 @@ function fetchData(accessToken) {
                     window.location = "index.html";
                 }
             },
-            error: function(){
-                alert("Veritabanından veriler alınırken bir hata oluştu.");
+            error: function () {
+                alert("Veriler alınırken bir hata meydana geldi.");
             }
         });
     };
@@ -991,7 +997,7 @@ function onSelect(e){
 			success: function (result) {
 			},
 			error: function () {
-			    alert("Çıkış işlemi sırasında bir hata metdana geldi.");
+			    alert("Çıkış yapılırken bir hata meydana geldi.");
 			}
         });
     }
