@@ -856,60 +856,73 @@ function ArayanClick(value)
 function RandevuAciklamaEkle() {
     var BaskanAciklama = document.getElementById('AciklamaId').value;
     var RandevuAciklama = document.getElementById('RandevuAciklamaData').innerHTML;
-    //console.log(BaskanAciklama);
+    console.log(BaskanAciklama);
     //console.log(RandevuId);
     //console.log(RandevuAciklama);
 
-    $.ajax({
-        type: "POST",
-        data: { 'accessToken': token, SecilenRandevuId: RandevuId, BaskanAciklamasi: BaskanAciklama, MevcutRandevuAciklama: RandevuAciklama },
-        url: app.endpoints.randevuDetayAciklama,
-        dataType: "json",
-        crossDomain: true,
-        success: function (result) {
-            //console.log(result);
-            if (result != null) {
-                scope.$apply(function () {
-                    scope.SecilenRandevu = result.SecilenRandevu;
-                    window.location.href = "#RandevuDetay";
-                });
+    if (BaskanAciklama.toString() == "" || BaskanAciklama == null ) {
+        navigator.notification.alert("Önce Açıklama Yazınız!",
+                 function () { }, "Veri Ekleme Hatası", 'Tamam');
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            data: { 'accessToken': token, SecilenRandevuId: RandevuId, BaskanAciklamasi: BaskanAciklama, MevcutRandevuAciklama: RandevuAciklama },
+            url: app.endpoints.randevuDetayAciklama,
+            dataType: "json",
+            crossDomain: true,
+            success: function (result) {
+                //console.log(result);
+                if (result != null) {
+                    scope.$apply(function () {
+                        scope.SecilenRandevu = result.SecilenRandevu;
+                        window.location.href = "#RandevuDetay";
+                    });
+                }
+                else {
+                    window.localStorage.removeItem("accessToken");
+                    window.location = "index.html";
+                }
             }
-            else {
-                window.localStorage.removeItem("accessToken");
-                window.location = "index.html";
-            }
-        }
-    });
+        });
+    }
+
 };
 
 function ArayanSonucEkle()
 {
     var BaskanSonuc = document.getElementById('SonucId').value;
     var ArayanSonuc = document.getElementById('ArayanSonucData').innerHTML;
-    //console.log(BaskanSonuc);
+    console.log(BaskanSonuc);
     //console.log(ArayanId);
     //console.log(ArayanSonuc);
 
-    $.ajax({
-        type: "POST",
-        data: { 'accessToken': token, SecilenArayanId: ArayanId, BaskanSonuc: BaskanSonuc, MevcutArayanSonuc: ArayanSonuc },
-        url: app.endpoints.arayanDetayAciklama,
-        dataType: "json",
-        crossDomain: true,
-        success: function (result) {
-            //console.log(result);
-            if (result != null) {
-                scope.$apply(function () {
-                    scope.SecilenArayan = result.SecilenArayan;
-                    window.location.href = "#ArayanDetay";
-                });
+    if (BaskanSonuc.toString() == "" || BaskanSonuc == null) {
+        navigator.notification.alert("Önce Sonuç Yazınız!",
+                 function () { }, "Veri Ekleme Hatası", 'Tamam');
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            data: { 'accessToken': token, SecilenArayanId: ArayanId, BaskanSonuc: BaskanSonuc, MevcutArayanSonuc: ArayanSonuc },
+            url: app.endpoints.arayanDetayAciklama,
+            dataType: "json",
+            crossDomain: true,
+            success: function (result) {
+                //console.log(result);
+                if (result != null) {
+                    scope.$apply(function () {
+                        scope.SecilenArayan = result.SecilenArayan;
+                        window.location.href = "#ArayanDetay";
+                    });
+                }
+                else {
+                    window.localStorage.removeItem("accessToken");
+                    window.location = "index.html";
+                }
             }
-            else {
-                window.localStorage.removeItem("accessToken");
-                window.location = "index.html";
-            }
-        }
-    });
+        });
+    }
 };
 
 function getDate() {
