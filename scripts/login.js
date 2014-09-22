@@ -41,8 +41,9 @@
 	                }
 	            },
 	            error: function () {
-	                navigator.notification.alert("Giriş işlemi sırasında bir hata oldu. Lütfen tekrar deneyiniz.",
-                    function () { }, "Sistem Hatası", 'Tamam');
+	                /*navigator.notification.alert("Giriş işlemi sırasında bir hata oldu. Lütfen tekrar deneyiniz.",
+                    function () { }, "Sistem Hatası", 'Tamam');*/
+	                alert("Giriş işlemi sırasında bir hata oldu. Lütfen tekrar deneyiniz.");
 
 	            }
 	        });

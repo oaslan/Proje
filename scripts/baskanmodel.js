@@ -861,8 +861,10 @@ function RandevuAciklamaEkle() {
     //console.log(RandevuAciklama);
 
     if (BaskanAciklama.toString() == "" || BaskanAciklama == null ) {
-        navigator.notification.alert("Önce Açıklama Yazınız!",
+        /*navigator.notification.alert("Önce Açıklama Yazınız!",
                  function () { }, "Veri Ekleme Hatası", 'Tamam');
+                 */
+        alert("Kaydet butonuna basmadan önce Açıklama ekleyiniz!");
     }
     else {
         $.ajax({
@@ -898,8 +900,9 @@ function ArayanSonucEkle()
     //console.log(ArayanSonuc);
 
     if (BaskanSonuc.toString() == "" || BaskanSonuc == null) {
-        navigator.notification.alert("Önce Sonuç Yazınız!",
-                 function () { }, "Veri Ekleme Hatası", 'Tamam');
+        /*navigator.notification.alert("Önce Sonuç Yazınız!",
+                 function () { }, "Veri Ekleme Hatası", 'Tamam');*/
+        alert("Kaydet butonuna basmadan önce Sonuç Yazınız!");
     }
     else {
         $.ajax({
@@ -951,6 +954,9 @@ function fetchData(accessToken) {
                     window.localStorage.removeItem("accessToken");
                     window.location = "index.html";
                 }
+            },
+            error: function(){
+                alert("Veritabanından veriler alınırken bir hata oluştu.");
             }
         });
     };
@@ -983,6 +989,9 @@ function onSelect(e){
 			},
 			crossDomain: true,
 			success: function (result) {
+			},
+			error: function () {
+			    alert("Çıkış işlemi sırasında bir hata metdana geldi.");
 			}
         });
     }

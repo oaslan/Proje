@@ -65,9 +65,10 @@ function checkConnection() {
     if (typeof navigator.connection !== "undefined")
     {
         if (navigator.network.connection.type === Connection.NONE) {
-            navigator.notification.alert("Uygulama internet bağlantısı gerektirir.", function () {
+            /*navigator.notification.alert("Uygulama internet bağlantısı gerektirir.", function () {
                 navigator.app.exitApp();
-            }, "Bağlantı Hatası", 'Tamam');
+            }, "Bağlantı Hatası", 'Tamam');*/
+            alert("Uygulama internet bağlantısı gerektirir.");
         }
     }
 }
