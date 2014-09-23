@@ -4,7 +4,7 @@
 
     
     app.application = new kendo.mobile.Application(document.body, { layout: "tabstrip-layout", loading: "<h1>Yükleniyor</h1>", skin: "flat" });
-
+    /*
     app.endpoints = {
         login: "http://155.223.207.39/BelBaskan/api/Auth/Login",
         baskanView: "http://155.223.207.39/BelBaskan/api/Auth/BaskanView",
@@ -25,7 +25,7 @@
         randevuDetayAciklama: "http://155.223.207.39/BelBaskan/api/Auth/RandevuDetayAciklamaEkle",
         randevuDetay: "http://155.223.207.39/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula"
     };
-    /*
+  */
     app.endpoints = {
         login: "http://localhost/BelBaskan/api/Auth/Login",
         baskanView: "http://localhost/BelBaskan/api/Auth/BaskanView",
@@ -46,7 +46,7 @@
         randevuDetayAciklama: "http://localhost/BelBaskan/api/Auth/RandevuDetayAciklamaEkle",
         randevuDetay: "http://localhost/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula"
     };
-    */
+    
 })(window);
 function onLoad()
 { 
@@ -64,9 +64,10 @@ function checkConnection() {
     if (typeof navigator.connection !== "undefined")
     {
         if (navigator.network.connection.type === Connection.NONE) {
-            navigator.notification.alert("Uygulama internet bağlantısı gerektirir.", function () {
+            /*navigator.notification.alert("Uygulama internet bağlantısı gerektirir.", function () {
                 navigator.app.exitApp();
-            }, "Bağlantı Hatası", 'Tamam');
+            }, "Bağlantı Hatası", 'Tamam');*/
+            alert("Uygulama internet bağlantısı gerektirir.");
         }
     }
 }

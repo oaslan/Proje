@@ -717,17 +717,23 @@ $(function(){
             navigator.app.exitApp();
         }, "Bağlantı Hatası", 'Tamam');
             } else if (jqXHR.status == 404) {
-                navigator.notification.alert("Servis noktası bulunamadı.",function () { }, "Bağlantı Hatası", 'Tamam');
+                //navigator.notification.alert("Servis noktası bulunamadı.",function () { }, "Bağlantı Hatası", 'Tamam');
+                alert("Servis noktası bulunamadı.");
             } else if (jqXHR.status >= 500) {
-              navigator.notification.alert("Serviste sunucu hatası.",function () { }, "Sistem Hatası", 'Tamam');
+                //navigator.notification.alert("Serviste sunucu hatası.",function () { }, "Sistem Hatası", 'Tamam');
+                alert("Serviste sunucu hatası.");
             } else if (exception === 'parsererror') {
-              navigator.notification.alert("Servisten dönen kayıt hatalı.",function () { }, "Sistem Hatası", 'Tamam');
+                //navigator.notification.alert("Servisten dönen kayıt hatalı.",function () { }, "Sistem Hatası", 'Tamam');
+                alert("Servisten dönen kayıt hatalı.");
             } else if (exception === 'timeout') {
-                navigator.notification.alert("İstek zaman aşımına uğradı.",function () { }, "Zaman aşımı", 'Tamam');
+                //navigator.notification.alert("İstek zaman aşımına uğradı.",function () { }, "Zaman aşımı", 'Tamam');
+                alert("İstek zaman aşımına uğradı.");
             } else if (exception === 'abort') {
-                navigator.notification.alert("İstek iptal edildi.",function () { }, "Sistem Hatası", 'Tamam');
+                //navigator.notification.alert("İstek iptal edildi.",function () { }, "Sistem Hatası", 'Tamam');
+                alert("İstek iptal edildi.");
             } else {
-                navigator.notification.alert("Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.",function () { }, "Bilinmeyen Hata", 'Tamam');
+                //navigator.notification.alert("Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.",function () { }, "Bilinmeyen Hata", 'Tamam');
+                alert("Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.");
             }
         }
     });
@@ -816,6 +822,9 @@ function RandevuClick(value) {
                 window.localStorage.removeItem("accessToken");
                 window.location = "index.html";
             }
+        },
+        error: function () {
+            alert("Randevu seçilirken bir hata meydana geldi.");
         }
     });
 };
@@ -849,6 +858,9 @@ function ArayanClick(value)
                 window.localStorage.removeItem("accessToken");
                 window.location = "index.html";
             }
+        },
+        error: function () {
+            alert("Arayan kişi seçilirken bir hata meydana geldi.");
         }
     });
 };
@@ -861,8 +873,9 @@ function RandevuAciklamaEkle() {
     //console.log(RandevuAciklama);
 
     if (BaskanAciklama.toString() == "" || BaskanAciklama == null ) {
-        navigator.notification.alert("Önce Açıklama Yazınız!",
-                 function () { }, "Veri Ekleme Hatası", 'Tamam');
+        /*navigator.notification.alert("Kaydet butonuna basmadan önce Açıklama Yazınız!",
+                 function () { }, "Veri Ekleme Hatası", 'Tamam');*/
+        alert("Kaydet butonuna basmadan önce Açıklama Yazınız!");
     }
     else {
         $.ajax({
@@ -883,6 +896,9 @@ function RandevuAciklamaEkle() {
                     window.localStorage.removeItem("accessToken");
                     window.location = "index.html";
                 }
+            },
+            error: function () {
+                alert("Randevu açıklama eklenirken bir hata meydana geldi.");
             }
         });
     }
@@ -898,8 +914,9 @@ function ArayanSonucEkle()
     //console.log(ArayanSonuc);
 
     if (BaskanSonuc.toString() == "" || BaskanSonuc == null) {
-        navigator.notification.alert("Önce Sonuç Yazınız!",
-                 function () { }, "Veri Ekleme Hatası", 'Tamam');
+        /*navigator.notification.alert("Kaydet butonuna basmadan önce Sonuç Yazınız!",
+                 function () { }, "Veri Ekleme Hatası", 'Tamam');*/
+        alert("Kaydet butonuna basmadan önce Sonuç Yazınız!");
     }
     else {
         $.ajax({
@@ -920,6 +937,9 @@ function ArayanSonucEkle()
                     window.localStorage.removeItem("accessToken");
                     window.location = "index.html";
                 }
+            },
+            error: function () {
+                alert("Arayan sonuç eklerken bir hata meydana geldi.");
             }
         });
     }
@@ -951,6 +971,9 @@ function fetchData(accessToken) {
                     window.localStorage.removeItem("accessToken");
                     window.location = "index.html";
                 }
+            },
+            error: function () {
+                alert("Veriler alınırken bir hata meydana geldi.");
             }
         });
     };

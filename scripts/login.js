@@ -12,8 +12,9 @@
                 Sifre = that.get("Sifre").trim();
 
             if (Kullanici === "" || Sifre === "") {
-                navigator.notification.alert("Kullanıcı Adı ve Şifre gerekli!",
-                    function () { }, "Giriş Hatası", 'Tamam');
+                /*navigator.notification.alert("Kullanıcı Adı ve Şifre gerekli!",
+                    function () { }, "Giriş Hatası", 'Tamam');*/
+                alert("Kullanıcı Adı ve Şifre gerekli!");
 
                 return;
             }
@@ -33,13 +34,15 @@
 	                    window.location = "index_logged.html";
 	                }
 	                else {
-	                navigator.notification.alert("Kullanıcı adı veya şifre hatası.",
-                        function () { }, "Giriş Hatası", 'Tamam');
+	                /*navigator.notification.alert("Kullanıcı adı veya şifre hatası.",
+                        function () { }, "Giriş Hatası", 'Tamam');*/
+	                    alert(d.mesaj);
 	                }
 	            },
 	            error: function () {
-	                navigator.notification.alert("Giriş işlemi sırasında bir hata oldu. Lütfen tekrar deneyiniz.",
-                    function () { }, "Sistem Hatası", 'Tamam');
+	                /*navigator.notification.alert("Giriş işlemi sırasında bir hata oldu. Lütfen tekrar deneyiniz.",
+                    function () { }, "Sistem Hatası", 'Tamam');*/
+	                alert("Giriş işlemi sırasında bir hata oldu. Lütfen tekrar deneyiniz.");
 
 	            }
 	        });
