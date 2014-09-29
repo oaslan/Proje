@@ -54,29 +54,28 @@
 
         <ul id="tarihList" data-role="listview" data-style="inset">
             <li>
+                <div style="width:100%; height:38px;">
+                    <label style="width:30%; float:left; text-align:left; font-size:13px">Önceki<br>Gün</label>
+                    <input style="width:40%;text-align:center" type="date" id="Tarih" class="datePicker" ng-model="Tarih">
+                    <label style="width:30%; float:right; text-align:right; font-size:13px">Sonraki<br>Gün</label>
+                </div>
                 <div style="width:100%; height:45px">
                     <div style="width:30%;float:left">
-                        <a id="Dun" data-role="button" style="background-image:url(styles/images/left-arrow.gif); background-size: 100%; width: 35px;height: 35px;"></a>
+                        <a id="Dun" data-role="button" style="background-image:url(styles/images/left-arrow.gif); background-size: 100%; width: 45px;height: 45px;"></a>
                     </div>
-                    <a id="Bugun" data-role="button" class="label label-danger" style="width:38%; height:33px; text-align:center; font-size:17px; background-color:#007E6F; color:white"> Bugün </a>
+                    <a id="Bugun" data-role="button" class="label label-danger" style="width:38%; height:30px; text-align:center; font-size:14px; background-color:#007E6F; color:white; margin-top:15px"> Bugün </a>
                     <div style="width:30%;float:right">
-                        <a id="Yarin" data-role="button" style="background-image:url(styles/images/right-arrow.gif); background-size: 100%; width: 35px;height: 35px; float:right"></a>
+                        <a id="Yarin" data-role="button" style="background-image:url(styles/images/right-arrow.gif); background-size: 100%; width: 45px;height: 45px; float:right"></a>
                     </div>
-                </div>
-                <div>
-                    <label style="width:30%; float:left; text-align:left">Önceki Gün</label>
-                    <input style="width:40%;text-align:center" type="date" id="Tarih" class="datePicker" ng-model="Tarih">
-                    <label style="width:30%; float:right; text-align:right">Sonraki Gün</label>
                 </div>
             </li>
         </ul>
 
         <ul data-role="listview" data-style="inset">
             <li ng-show="Randevular.length < 1 || Randevular == null">Randevu Kaydı Yok</li>
-
             <li ng-repeat="r in Randevular" style="margin:0 0 0 0;">
                 <a onclick="RandevuClick(this)">
-                    <div class="news" style="margin:0 0 0 0;">
+                    <div class="news" style="margin:0 0 0 0; float:left; width:85%">
                         <div class="pull-left" style="margin:0 0 0 0;">
                             <div class="news_icon">
                                 <span class="label label-primary">{{r.BaslamaSaati}}</span>
@@ -84,15 +83,16 @@
                                 <img src="styles/images/news_icon.gif" alt="" title="">
                             </div>
                         </div>
-
                         <div class="media-body" style="margin:0 0 0 0;">
-                            <h2>{{r.Yeri | uppercase}}</h2>
+                            <h2 style="font-size:13px;">{{r.Yeri | uppercase}}</h2>
                             <div class="news_content" style="margin-right:12px">
-                                <span>{{ r.Konu | uppercase}}</span><br>
+                                <span style="font-size:10px;">{{ r.Konu | uppercase}}</span><br>
                                 <p style="font-size:13px" id="SecilenRandevuId" ng-show="false">{{ r.Id }}</p>
                             </div>
-                            <div class="read_more_link" style="text-decoration:none;color:#f7941d">Detay</div>
                         </div>
+                    </div>
+                    <div style="float:right; width:15%">
+                        <div class="read_more_link" style="text-decoration:none;color:#f7941d; font-size:12px; margin-top:20px">Detay</div>
                     </div>
                 </a>
             </li>
@@ -107,24 +107,25 @@
 
             <li ng-repeat="a in Arayanlar" style="margin:0 0 0 0;">
                 <a onclick="ArayanClick(this)">
-                    <div class="news" style="margin:0 0 0 0;">
+                    <div class="news" style="margin:0 0 0 0; float:left; width:85%">
                         <div class="pull-left" style="margin:0 0 0 0;">
                             <div class="news_icon">
                                 <span class="label label-primary">{{a.AramaSaati}}</span>
                                 <label></label>
-                                <img src="styles/images/testimonials_icon.gif" alt="" title="">
+                                <img src="styles/images/testimonials_icon.gif" style="width:22px; height:40px; align-content:center" alt="" title="">
                             </div>
                         </div>
-
                         <div class="media-body" style="margin:0 0 0 0;">
-                            <h2>{{a.ArayanAdi | uppercase}}</h2>
-                            <div class="news_content" style="margin-right:12px">
-                                <span>{{ a.ArayanSoyadi | uppercase}}</span><br>
-                                <p ng-show="a.Konu.length > 0" class="label label-success">Konu:</p>{{ a.Konu }}
-                                <p style="font-size:12px" id="SecilenArayanId" ng-show="false">{{ a.Id }}</p>
+                            <h2 style="font-size:13px;">{{a.ArayanAdi | uppercase}}</h2>
+                            <div class="news_content" style="margin-right:12px; font-size:12px">
+                                <span style="font-size:10px;">{{ a.ArayanSoyadi | uppercase}}</span><br>
+                                <p ng-show="a.Konu.length > 0" class="label label-success" style="font-size:10px;">Konu:</p>{{ a.Konu }}
+                                <p style="font-size:10px" id="SecilenArayanId" ng-show="false">{{ a.Id }}</p>
                             </div>
-                            <div class="read_more_link" style="text-decoration:none;color:#f7941d">Detay</div>
                         </div>
+                    </div>
+                    <div style="float:right; width:15%">
+                        <div class="read_more_link" style="text-decoration:none;color:#f7941d;font-size:12px;margin-top:20px">Detay</div>
                     </div>
                 </a>
             </li>
@@ -542,8 +543,8 @@
     <div data-role="layout" data-id="mobile-tabstrip">
         <header data-role="header">
             <div data-role="navbar">
-                <a data-role="backbutton" class="fui-arrow-left"style="background-image:url(styles/images/back-button.png); background-size: 100%; width:96px; height:36px; float:left; margin-left:14px;"></a>
-                <span data-role="view-title"></span>
+                <a data-role="backbutton" class="fui-arrow-left"style="background-image:url(styles/images/back-button.png); background-size: 100%; width:81px; height:29px; float:left; margin-left:14px;"></a>
+                <span data-role="view-title" style="font-size:20px; color:darkred"></span>
             </div>
         </header>
         <p>TabStrip</p>
