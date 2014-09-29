@@ -55,17 +55,17 @@
         <ul id="tarihList" data-role="listview" data-style="inset">
             <li>
                 <div style="width:100%; height:38px;">
-                    <label style="width:32%; float:left; text-align:left; font-size:13px">Önceki<br>Gün</label>
-                    <input style="width:36%;text-align:center" type="date" id="Tarih" class="datePicker" ng-model="Tarih">
-                    <label style="width:32%; float:right; text-align:right; font-size:13px">Sonraki<br>Gün</label>
+                    <label style="width:23%; float:left; text-align:left; font-size:13px">Önceki<br>Gün</label>
+                    <input style="width:50%;text-align:center" type="date" id="Tarih" class="datePicker" ng-model="Tarih">
+                    <label style="width:23%; float:right; text-align:right; font-size:13px">Sonraki<br>Gün</label>
                 </div>
                 <div style="width:100%; height:45px">
-                    <div style="width:32%;float:left">
-                        <a id="Dun" data-role="button" style="background-image:url(styles/images/left-arrow.gif); background-size: 100%; width: 45px;height: 45px;"></a>
+                    <div style="width:23%;float:left">
+                        <a id="Dun" data-role="button" style="background-image:url(styles/images/left-arrow.gif); background-size: 100%; width: 40px;height: 40px;"></a>
                     </div>
-                    <a id="Bugun" data-role="button" class="label label-danger" style="width:32%; height:30px; text-align:center; font-size:14px; background-color:#007E6F; color:white; margin-top:15px"> Bugün </a>
-                    <div style="width:32%;float:right">
-                        <a id="Yarin" data-role="button" style="background-image:url(styles/images/right-arrow.gif); background-size: 100%; width: 45px;height: 45px; float:right"></a>
+                    <a id="Bugun" data-role="button" class="label label-danger" style="width:50%; height:30px; text-align:center; font-size:14px; background-color:#007E6F; color:white; margin-top:11px"> Bugün </a>
+                    <div style="width:23%;float:right">
+                        <a id="Yarin" data-role="button" style="background-image:url(styles/images/right-arrow.gif); background-size: 100%; width: 40px;height: 40px; float:right"></a>
                     </div>
                 </div>
             </li>
@@ -84,9 +84,9 @@
                             </div>
                         </div>
                         <div class="media-body" style="margin:0 0 0 0;">
-                            <h2 style="font-size:13px;">{{r.Yeri | uppercase}}</h2>
+                            <h2 style="font-size:13px;"><strong>{{r.Yeri | uppercase}}</strong></h2>
                             <div class="news_content" style="margin-right:12px">
-                                <span style="font-size:10px;">{{ r.Konu | uppercase}}</span><br>
+                                <span style="font-size:10px;"><strong>{{ r.Konu | uppercase}}</strong></span><br>
                                 <p style="font-size:13px" id="SecilenRandevuId" ng-show="false">{{ r.Id }}</p>
                             </div>
                         </div>
@@ -116,9 +116,9 @@
                             </div>
                         </div>
                         <div class="media-body" style="margin:0 0 0 0;">
-                            <h2 style="font-size:13px;">{{a.ArayanAdi | uppercase}}</h2>
+                            <h2 style="font-size:13px;"><strong>{{a.ArayanAdi | uppercase}}</strong></h2>
                             <div class="news_content" style="margin-right:12px; font-size:12px">
-                                <span style="font-size:10px;">{{ a.ArayanSoyadi | uppercase}}</span><br>
+                                <span style="font-size:10px;"><strong>{{ a.ArayanSoyadi | uppercase}}</strong></span><br>
                                 <p ng-show="a.Konu.length > 0" class="label label-success" style="font-size:10px;">Konu:</p>{{ a.Konu }}
                                 <p style="font-size:10px" id="SecilenArayanId" ng-show="false">{{ a.Id }}</p>
                             </div>
