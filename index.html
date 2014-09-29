@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title></title>
@@ -8,6 +8,7 @@
     <link href="kendo/styles/kendo.bootstrap.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
     <link href="styles/main.css" rel="stylesheet" />
+    <link href="styles/flat-ui.css" rel="stylesheet" />
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8" src="kendo/js/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="kendo/js/kendo.mobile.min.js"></script>
@@ -20,7 +21,12 @@
         data-role="view"
         data-title="Kullanıcı Girişi"
         data-model="app.loginService.viewModel">
+        <a href="#ayarlar" class="fui-gear" style="margin-left:25px; margin-top:10px; width:21px; height:21px" onclick="MevcutIPGoster()">  </a>
         
+       <!-- <div class="btn-group-vertical">
+            <button type="button" class="btn btn-primary btn-block"><i class="glyphicon glyphicon-cog"></i></button>
+        </div>-->
+
         <div class="view-content">
             <form data-bind="events: { keyup: checkEnter }">
                 <ul data-role="listview" data-style="inset" data-bind="invisible: isLoggedIn">
@@ -44,7 +50,36 @@
                 </ul>
             </form>
         </div>
+    </div>
+    
+    <div id="ayarlar"
+         data-role="view"
+         data-title="Ayarlar">
 
+        <div class="view-content">
+            <form data-bind="events: { keyup: checkEnter }">
+                <ul data-role="listview" data-style="inset">
+                    <li>
+                        <div style="float:left; width:40%">Mevcut Servis IP: </div>
+                        <div style="float:right; width:60%; text-align:right"><span id="MevcutServisIP"></span></div>
+                    </li>
+                    <li>
+                        <div style="float:left; width:40%" class="k-input">Yeni Servis IP: </div>
+                        <input type="text" name="enter" style="float:right; width:60%;" class="enter" id="yeniServisIP" value="" />
+                    </li>
+                    <li>
+                        <div style="float:right">
+                            <div class="buttonArea" style="float:left">
+                                <input type="submit" id="kaydet" data-role="button" class="btn btn-primary btn-block" onclick="Kaydet(this)" value="Kaydet" />
+                            </div>
+                            <div class="buttonArea" style="float:right">
+                                <input type="submit" id="iptal" data-role="button" class="btn btn-primary btn-block" onclick="Iptal()" value="İptal" />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
     </div>
 
     <!--Layout-->

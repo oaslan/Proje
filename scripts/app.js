@@ -4,50 +4,74 @@
 
     
     app.application = new kendo.mobile.Application(document.body, { layout: "tabstrip-layout", loading: "<h1>Yükleniyor</h1>", skin: "flat" });
-
+    /*
     app.endpoints = {
-        login: "http://155.223.206.138/BelBaskan/api/Auth/Login",
-        baskanView: "http://155.223.206.138/BelBaskan/api/Auth/BaskanView",
-        arayanDetay: "http://155.223.206.138/BelBaskan/api/Auth/ArayanDetayBilgisiSorgula",
-        arayanDetayAciklama: "http://155.223.206.138/BelBaskan/api/Auth/ArayanDetaySonucEkle",
-        Cikis: "http://155.223.206.138/BelBaskan/api/Auth/Cikis",
-        Rapor1: "http://155.223.206.138/BelBaskan/api/Auth/GiderButceOranBilgisiSorgula",
-        Rapor2: "http://155.223.206.138/BelBaskan/api/Auth/MudurlukHazirlananGiderButceOranBilgisiSorgula",
-        Rapor3: "http://155.223.206.138/BelBaskan/api/Auth/MudurlukGerceklesenGiderButceOranBilgisiSorgula",
-        Rapor4: "http://155.223.206.138/BelBaskan/api/Auth/MudurlukPersonelGideriToplamGelirButcesiOranBilgisiSorgula",
-        Rapor5: "http://155.223.206.138/BelBaskan/api/Auth/MudurlukGerceklesenGiderMudurlukButceOranBilgisiSorgula",
-        Rapor6: "http://155.223.206.138/BelBaskan/api/Auth/GelirButceOranBilgisiSorgula",
-        Rapor7: "http://155.223.206.138/BelBaskan/api/Auth/TahsildarTahsilatBilgisiSorgula",
-        Rapor8: "http://155.223.206.138/BelBaskan/api/Auth/GelirTuruTahsilatBilgisiSorgula",
-        Rapor9: "http://155.223.206.138/BelBaskan/api/Auth/BankaDurumBilgisiSorgula",
+        login: "http://155.223.207.39/BelBaskan/api/Auth/Login",
+        baskanView: "http://155.223.207.39/BelBaskan/api/Auth/BaskanView",
+        arayanDetay: "http://155.223.207.39/BelBaskan/api/Auth/ArayanDetayBilgisiSorgula",
+        arayanDetayAciklama: "http://155.223.207.39/BelBaskan/api/Auth/ArayanDetaySonucEkle",
+        Cikis: "http://155.223.207.39/BelBaskan/api/Auth/Cikis",
+        Rapor1: "http://155.223.207.39/BelBaskan/api/Auth/GiderButceOranBilgisiSorgula",
+        Rapor2: "http://155.223.207.39/BelBaskan/api/Auth/MudurlukHazirlananGiderButceOranBilgisiSorgula",
+        Rapor3: "http://155.223.207.39/BelBaskan/api/Auth/MudurlukGerceklesenGiderButceOranBilgisiSorgula",
+        Rapor4: "http://155.223.207.39/BelBaskan/api/Auth/MudurlukPersonelGideriToplamGelirButcesiOranBilgisiSorgula",
+        Rapor5: "http://155.223.207.39/BelBaskan/api/Auth/MudurlukGerceklesenGiderMudurlukButceOranBilgisiSorgula",
+        Rapor6: "http://155.223.207.39/BelBaskan/api/Auth/GelirButceOranBilgisiSorgula",
+        Rapor7: "http://155.223.207.39/BelBaskan/api/Auth/TahsildarTahsilatBilgisiSorgula",
+        Rapor8: "http://155.223.207.39/BelBaskan/api/Auth/GelirTuruTahsilatBilgisiSorgula",
+        Rapor9: "http://155.223.207.39/BelBaskan/api/Auth/BankaDurumBilgisiSorgula",
 
 
-        randevuDetayAciklama: "http://155.223.206.138/BelBaskan/api/Auth/RandevuDetayAciklamaEkle",
-        randevuDetay: "http://155.223.206.138/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula"
+        randevuDetayAciklama: "http://155.223.207.39/BelBaskan/api/Auth/RandevuDetayAciklamaEkle",
+        randevuDetay: "http://155.223.207.39/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula"
     };
-  /*
+  */
+
+    //var hostAdress = getIP();
+    
+
+    function getIP()
+    {
+        if (window.XMLHttpRequest) {
+            var httpObj = new XMLHttpRequest();                         //yeni tarayıcılarda xml dosyasını bu şekilde import edebiliriz
+        }
+        else {
+            var httpObj = new ActiveXObject("Microsoft.XMLHTTP");       //internet explorer'ın bazı eski sürümlerine destek verebilmek için bu şekilde
+        }
+
+        httpObj.open("GET", "ip.txt", false);                      //xml dosyamızın adı.
+        httpObj.send();
+
+        var veri = httpObj.responseText;
+        return veri.toString();
+    };
+    var hostAdress = window.localStorage.getItem("ipAdres");
+    //console.log(hostAdress);
+
     app.endpoints = {
-        login: "http://localhost/BelBaskan/api/Auth/Login",
-        baskanView: "http://localhost/BelBaskan/api/Auth/BaskanView",
-        arayanDetay: "http://localhost/BelBaskan/api/Auth/ArayanDetayBilgisiSorgula",
-        arayanDetayAciklama: "http://localhost/BelBaskan/api/Auth/ArayanDetaySonucEkle",
-        Cikis: "http://localhost/BelBaskan/api/Auth/Cikis",
-        Rapor1: "http://localhost/BelBaskan/api/Auth/GiderButceOranBilgisiSorgula",
-        Rapor2: "http://localhost/BelBaskan/api/Auth/MudurlukHazirlananGiderButceOranBilgisiSorgula",
-        Rapor3: "http://localhost/BelBaskan/api/Auth/MudurlukGerceklesenGiderButceOranBilgisiSorgula",
-        Rapor4: "http://localhost/BelBaskan/api/Auth/MudurlukPersonelGideriToplamGelirButcesiOranBilgisiSorgula",
-        Rapor5: "http://localhost/BelBaskan/api/Auth/MudurlukGerceklesenGiderMudurlukButceOranBilgisiSorgula",
-        Rapor6: "http://localhost/BelBaskan/api/Auth/GelirButceOranBilgisiSorgula",
-        Rapor7: "http://localhost/BelBaskan/api/Auth/TahsildarTahsilatBilgisiSorgula",
-        Rapor8: "http://localhost/BelBaskan/api/Auth/GelirTuruTahsilatBilgisiSorgula",
-        Rapor9: "http://localhost/BelBaskan/api/Auth/BankaDurumBilgisiSorgula",
+        login: "http://" + hostAdress +"/BelBaskan/api/Auth/Login",
+        baskanView: "http://" + hostAdress + "/BelBaskan/api/Auth/BaskanView",
+        arayanDetay: "http://" + hostAdress + "/BelBaskan/api/Auth/ArayanDetayBilgisiSorgula",
+        arayanDetayAciklama: "http://" + hostAdress + "/BelBaskan/api/Auth/ArayanDetaySonucEkle",
+        Cikis: "http://" + hostAdress + "/BelBaskan/api/Auth/Cikis",
+        Rapor1: "http://" + hostAdress + "/BelBaskan/api/Auth/GiderButceOranBilgisiSorgula",
+        Rapor2: "http://" + hostAdress + "/BelBaskan/api/Auth/MudurlukHazirlananGiderButceOranBilgisiSorgula",
+        Rapor3: "http://" + hostAdress + "/BelBaskan/api/Auth/MudurlukGerceklesenGiderButceOranBilgisiSorgula",
+        Rapor4: "http://" + hostAdress + "/BelBaskan/api/Auth/MudurlukPersonelGideriToplamGelirButcesiOranBilgisiSorgula",
+        Rapor5: "http://" + hostAdress + "/BelBaskan/api/Auth/MudurlukGerceklesenGiderMudurlukButceOranBilgisiSorgula",
+        Rapor6: "http://" + hostAdress + "/BelBaskan/api/Auth/GelirButceOranBilgisiSorgula",
+        Rapor7: "http://" + hostAdress + "/BelBaskan/api/Auth/TahsildarTahsilatBilgisiSorgula",
+        Rapor8: "http://" + hostAdress + "/BelBaskan/api/Auth/GelirTuruTahsilatBilgisiSorgula",
+        Rapor9: "http://" + hostAdress + "/BelBaskan/api/Auth/BankaDurumBilgisiSorgula",
 
         
-        randevuDetayAciklama: "http://localhost/BelBaskan/api/Auth/RandevuDetayAciklamaEkle",
-        randevuDetay: "http://localhost/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula"
+        randevuDetayAciklama: "http://" + hostAdress + "/BelBaskan/api/Auth/RandevuDetayAciklamaEkle",
+        randevuDetay: "http://" + hostAdress + "/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula"
     };
-    */
+
 })(window);
+
+
 function onLoad()
 { 
     document.addEventListener('deviceready', onDeviceReady, false);

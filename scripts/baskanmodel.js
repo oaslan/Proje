@@ -2,9 +2,10 @@ var scope, token;
 var RandevuId;
 var ArayanId;
 app = window.app = window.app || {};
+
 angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', function ($scope) {
     //Arayan + Randevu
-    $scope.Tarih = "2014-02-03";
+    $scope.Tarih = "03.02.2014";
     $scope.Arayanlar = [];
     $scope.Randevular = [];
     $scope.SecilenRandevu = [];
@@ -318,6 +319,8 @@ angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', functi
         
     };
 }]);
+
+
 
 var RaporChart1 = function(data)
 {            
@@ -707,15 +710,15 @@ var RaporChart8 = function(data)
     });
 };
 
-$(function(){
+$(function () {
     $.ajaxSetup({
         beforeSend: function () { app.application.showLoading(); },
-        complete: function () {  app.application.hideLoading(); },
-        error: function(jqXHR, exception) {
+        complete: function () { app.application.hideLoading(); },
+        error: function (jqXHR, exception) {
             if (jqXHR.status === 0) {
                 navigator.notification.alert("Uygulama internet bağlantısı gerektirir.", function () {
-            navigator.app.exitApp();
-        }, "Bağlantı Hatası", 'Tamam');
+                    navigator.app.exitApp();
+                }, "Bağlantı Hatası", 'Tamam');
             } else if (jqXHR.status == 404) {
                 //navigator.notification.alert("Servis noktası bulunamadı.",function () { }, "Bağlantı Hatası", 'Tamam');
                 alert("Servis noktası bulunamadı.");
@@ -737,60 +740,86 @@ $(function(){
             }
         }
     });
-   //console.log($("#tabstrip-randevulaaccessTokenible"));
-   token = window.localStorage.getItem("accessToken");
-   if(token === undefined || token === null || token === "")
-        window.location="index.html";
-   scope = angular.element(document.getElementById("belediyeCTRL")).scope();
+    //console.log($("#tabstrip-randevulaaccessTokenible"));
+    token = window.localStorage.getItem("accessToken");
+    if (token === undefined || token === null || token === "")
+        window.location = "index.html";
+    scope = angular.element(document.getElementById("belediyeCTRL")).scope();
 
 
     // 16,09,2014 DateTimePicker -----------------------------------------------
-    
+
     var now = new Date();
-    var day = ("0" + now.getDate()).slice(-2);
+    /*var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
     var today = now.getFullYear() + "-" + (month) + "-" + (day);
+    */
+    var today = new Date();
+    today = new Date(today);
+    var nextDay = new Date();
 
-   $(function () {
+    $(function () {
         kendo.culture('tr-TR');
-   });
+    });
 
-   $(document).ready(function () {
+    $(document).ready(function () {
 
-       var today = new Date();
-       today = new Date(today);
+        $("#Tarih").kendoDatePicker({
+            value: (today.getDate() + "." + (today.getMonth() + 1) + "." + today.getFullYear())
+            //format: "dd/MM/yyyy",
+        });
 
-       $("#Tarih").kendoDatePicker({
-           value: today,
-           format: "dd/MM/yyyy",
-       });
+        $(document).on("click", "#Dun", function () {
 
-       //Tarih.value(today);
-       today.setDate(today.getDate() + 1);
-   });
+            scope.$apply(function () {
+                scope.Tarih = decreaseFromDate(tarihDuzenleFormataGore(scope.Tarih));
+            });
+            fetchData(token);
+        });
+
+        $(document).on("click", "#Bugun", function () {
+            var t = tarihDuzenleFormataGore(today);
+            scope.$apply(function () {
+                scope.Tarih = t;
+            });
+            fetchData(token);
+        });
+
+        $(document).on("click", "#Yarin", function () {
+
+            scope.$apply(function () {
+                scope.Tarih = increaseFromDate(tarihDuzenleFormataGore(scope.Tarih));
+            });
+            fetchData(token);
+        });
+
+        //Tarih.value(today);
+        //today.setDate(today.getDate() + 1);
+    });
 
 
     //Sorgu Başlangıç-Bitiş yılları -5
     var yillar = Array();
-    scope.$apply(function(){
-        for(var i = now.getFullYear() - 8;i<=now.getFullYear(); i++)
-        {
+    scope.$apply(function () {
+        for (var i = now.getFullYear() - 8; i <= now.getFullYear() ; i++) {
             yillar.push(i);
         }
         scope.Yillar = yillar;
         scope.sorguBaslangicYil = yillar[0];
         scope.sorguBitisYil = yillar[yillar.length - 1];
     });
-    
-    scope.$apply(function(){
+
+    scope.$apply(function () {
         scope.Tarih = today;
     });
     fetchData(token);
-    $(document).on("change","#Tarih",function(){
+    $(document).on("change", "#Tarih", function () {
         fetchData(token);
     });
     //console.log(document);
 });
+
+
 
 function RandevuClick(value) {
 
@@ -800,6 +829,7 @@ function RandevuClick(value) {
         window.location = "index.html";
     scope = angular.element(document.getElementById("belediyeCTRL")).scope();
 
+    console.log(value);
     RandevuId = $(value).find("#SecilenRandevuId")[0].innerHTML;
     //console.log(RandevuId);
 
@@ -816,7 +846,6 @@ function RandevuClick(value) {
                     scope.SecilenRandevu = result.SecilenRandevu;
                     window.location.href = "#RandevuDetay";
                 });
-                
             }
             else {
                 window.localStorage.removeItem("accessToken");
@@ -945,15 +974,80 @@ function ArayanSonucEkle()
     }
 };
 
-function getDate() {
+
+
+function tarihDuzenle(value) {
+    var day;
+    var month;
+    var year = value.getFullYear(); 
+    if ((value.getDate().toString().length > 1) && ((value.getMonth() + 1).toString().length > 1))
+    {
+        day = value.getDate();
+        month = (value.getMonth() + 1);
+    }
+    else if ((!(value.getDate().toString().length > 1)) && ((value.getMonth() + 1).toString().length > 1))
+    {
+        day = "0" + value.getDate();
+        month = (value.getMonth() + 1);
+    }
+    else if ((value.getDate().toString().length > 1) && (!((value.getMonth() + 1).toString().length > 1)))
+    {
+        day = value.getDate();
+        month = "0" + (value.getMonth() + 1);
+    }
+
+    return (day + "." + month + "." + year);
+    //var day = ("0" + value.getDate()).slice(-2);
+    //var month = ("0" + (value.getMonth() + 1)).slice(-2);
+    //var year = value.getFullYear();
+};
+
+function tarihDuzenleFormataGore(value){
+    if (value.toString().length > 10) {
+        return tarihDuzenle(value);
+    }
+    return value;
+};
+
+//Date decrease :
+function decreaseFromDate(tar) {
+    var dateString = (tar).split('.');
+    var date = new Date(dateString[2], parseInt(dateString[1]) - 1, dateString[0]);
+    return (formatDate(addDays(date, -1)));
+}
+
+//Date increase :
+function increaseFromDate(tar) {
+    var fromDateString = (tar).split('.');
+    var fromDate = new Date(fromDateString[2], parseInt(fromDateString[1]) - 1, fromDateString[0]);
+    return (formatDate(addDays(fromDate, 1)));
+}
+
+function formatDate(date) {
+    return ("00" + date.getDate()).slice(-"00".length) + '.' + ("00" + (date.getMonth() + 1)).slice(-"00".length) + '.' + date.getFullYear();
+}
+
+function addDays(date, days) {
+    var today = new Date(date);
+    var tomorrow = new Date();
+    tomorrow.setTime(today.getTime() + (days * 24 * 60 * 60 * 1000));
+    return tomorrow;
+}
+
+/*function getDate() {
     return scope.Tarih.split("-").reverse().join(".");
+};*/
+
+function getTarih() {
+    //console.log("FETCH : " + tarihDuzenleFormataGore(scope.Tarih));
+    return tarihDuzenleFormataGore(scope.Tarih);
 };
 
 function fetchData(accessToken) {
         //var data = { accessToken: accessToken };
         $.ajax({
             type: "POST",
-            data: { 'accessToken': accessToken, Tarih: getDate() },
+            data: { 'accessToken': accessToken, Tarih: getTarih() },
             url: app.endpoints.baskanView,
             dataType: "json",
             beforeSend: function () { app.application.showLoading(); },
@@ -979,34 +1073,32 @@ function fetchData(accessToken) {
     };
 
 //tab select
-function onSelect(e){
-  var item = $(e.item);
+function onSelect(e) {
+    var item = $(e.item);
     //console.log(item);
-    if(item.attr("id") === "arama")
-    {
+    if (item.attr("id") === "arama") {
         $("#tarihList").prependTo("#tabstrip-aramalar");
-		fetchData(token);
+        fetchData(token);
     }
-    else if(item.attr("id") === "randevu")
-    {
+    else if (item.attr("id") === "randevu") {
         $("#tarihList").prependTo("#tabstrip-randevular");
         fetchData(token);
     }
-    else if(item.attr("id") === "cikis")
-    {
+    else if (item.attr("id") === "cikis") {
         $.ajax({
-			type: "POST",
-			data: { '': token },
-			url: app.endpoints.Cikis,
-			dataType: "json",
-			beforeSend: function () { app.application.showLoading(); },
-			complete: function () {  app.application.hideLoading(); 
-				window.localStorage.removeItem("accessToken");
-				window.location = "index.html"; 
-			},
-			crossDomain: true,
-			success: function (result) {
-			}
+            type: "POST",
+            data: { '': token },
+            url: app.endpoints.Cikis,
+            dataType: "json",
+            beforeSend: function () { app.application.showLoading(); },
+            complete: function () {
+                app.application.hideLoading();
+                window.localStorage.removeItem("accessToken");
+                window.location = "index.html";
+            },
+            crossDomain: true,
+            success: function (result) {
+            }
         });
     }
-}
+};
