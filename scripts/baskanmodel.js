@@ -1,6 +1,7 @@
 var scope, token;
 var RandevuId;
 var ArayanId;
+var dataSource1;
 app = window.app = window.app || {};
 
 angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', function ($scope) {
@@ -9,8 +10,9 @@ angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', functi
     $scope.Arayanlar = [];
     $scope.Randevular = [];
     $scope.SecilenRandevu = [];
-    $scope.SecilenArayan = []
-    
+    $scope.SecilenArayan = [];
+    $scope.AjandaRandevular = [];
+
     //Rapor 1
     $scope.Yillar;
     $scope.sorguBaslangicYil;
@@ -319,8 +321,6 @@ angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', functi
         
     };
 }]);
-
-
 
 var RaporChart1 = function(data)
 {            
@@ -762,18 +762,109 @@ $(function () {
         kendo.culture('tr-TR');
     });
 
+   
+    AjandaRandevuFetchData(token, today);
+    //----------------------------------------------------------------
+    $(document).ready(function () {
+        kendo.culture('tr-TR');
+
+        $("#scheduler").kendoScheduler({
+            date: new Date(today),/*new Date("2014/01/16"),*/
+            startTime: new Date("2013/6/13 8:00"),
+            endTime: new Date("2013/6/13 22:00"),
+            //selectable:true,
+            //height: 400,
+            views: [
+                { type: "day"},
+                { type: "week", selected:true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
+                //"month",
+                { type: "agenda", selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
+            ],
+            editable: false,
+            eventTemplate: $("#event-template").html(),
+            timezone: "Etc/UTC",
+            dataSource: dataSource1
+        });
+
+        //console.log($(".k-state-default.k-nav-current")[0].childNodes[0].childNodes[1].firstChild.data);
+
+        // Scheduler in tarihi her değiştiğinde tabstript-aramalar ve tabstript-randevular kısmında bulunan kendodatepicker içeriği de schedulerden seçilen tarihe göre güncellenir.
+        $(document).on("click", ".k-link", function () {        /* class adı : ".k-link" , "#scheduler"  .k-scheduler-toolbar*/
+
+            var scheduler2 = $("#scheduler").data("kendoScheduler");
+
+            var AjandaTarih = scheduler2.date();
+            //console.log("AjandaTarih : " + scheduler2.date());
+
+            //var t = $(".k-state-default.k-nav-current")[0].childNodes[0].childNodes[1].firstChild.data;
+            //var trh = new Date(AjandaTarihDuzenle(t));
+            var trh = AjandaTarih;
+            //console.log("AA : " + (trh.getDate().toString().length > 1 ? trh.getDate() : ("0" + trh.getDate())) + "." + ((trh.getMonth() + 1).toString().length > 1 ? (trh.getMonth() + 1) : ("0" + (trh.getMonth() + 1))) + "." + trh.getFullYear());
+
+            scope.$apply(function () {
+                scope.Tarih = (trh.getDate().toString().length > 1 ? trh.getDate() : ("0" + trh.getDate())) + "." + ((trh.getMonth() + 1).toString().length > 1 ? (trh.getMonth() + 1) : ("0" + (trh.getMonth() + 1))) + "." + trh.getFullYear();
+            });
+        });
+
+        
+        function AjandaTarihDuzenle(tar) {
+            var temp;
+            var tarih;
+            if (tar.indexOf("-") != "-1") {
+                //console.log("- li Tarih");
+                temp = tar.split("-");
+                var k = temp[0].split(".");
+                //console.log(k[0] + "   " + (k[1] - 1) + "   " + k[2]);
+                tarih = new Date(k[2], k[1], k[0]);
+            }
+            else {
+                //console.log("Normal Tarih");
+                temp = tar.split(" ");
+                var ay;
+                if (temp[1] == "Ocak")    ay = 01;
+                if (temp[1] == "Şubat")   ay = 02;
+                if (temp[1] == "Mart")    ay = 03;
+                if (temp[1] == "Nisan")   ay = 04;
+                if (temp[1] == "Mayıs")   ay = 05;
+                if (temp[1] == "Haziran") ay = 06;
+                if (temp[1] == "Temmuz")  ay = 07;
+                if (temp[1] == "Ağustos") ay = 08;
+                if (temp[1] == "Eylül")   ay = 09;
+                if (temp[1] == "Ekim")    ay = 10;
+                if (temp[1] == "Kasım")   ay = 11;
+                if (temp[1] == "Aralık")  ay = 12;
+
+                tarih = new Date(temp[2], ay, temp[0]);
+                //console.log(temp[0] + "    " + temp[1] + " - " + (ay - 1) + "    " + temp[2]);
+            }
+            return tarih;
+        };
+        
+    });
+
+    //-------------------------------------------------------------
+    scope.$apply(function () {
+        scope.Tarih = today;
+    });
+
     $(document).ready(function () {
 
+        var scheduler = $("#scheduler").data("kendoScheduler");
+
         $("#Tarih").kendoDatePicker({
-            value: (today.getDate() + "." + (today.getMonth() + 1) + "." + today.getFullYear())
+            value: (today.getDate() + "." + (today.getMonth() + 1) + "." + today.getFullYear()),
+            change: function () {
+                //console.log("This.Value : " + this.value());
+                scheduler.date(this.value());
+            }
             //format: "dd/MM/yyyy",
         });
 
         $(document).on("click", "#Dun", function () {
-
             scope.$apply(function () {
                 scope.Tarih = decreaseFromDate(tarihDuzenleFormataGore(scope.Tarih));
             });
+            AjandaTarihDegistir(scope.Tarih);
             fetchData(token);
         });
 
@@ -782,6 +873,7 @@ $(function () {
             scope.$apply(function () {
                 scope.Tarih = t;
             });
+            AjandaTarihDegistir(scope.Tarih);
             fetchData(token);
         });
 
@@ -790,14 +882,16 @@ $(function () {
             scope.$apply(function () {
                 scope.Tarih = increaseFromDate(tarihDuzenleFormataGore(scope.Tarih));
             });
+            AjandaTarihDegistir(scope.Tarih);
             fetchData(token);
         });
 
         //Tarih.value(today);
         //today.setDate(today.getDate() + 1);
+        
     });
 
-
+   
     //Sorgu Başlangıç-Bitiş yılları -5
     var yillar = Array();
     scope.$apply(function () {
@@ -809,17 +903,105 @@ $(function () {
         scope.sorguBitisYil = yillar[yillar.length - 1];
     });
 
-    scope.$apply(function () {
-        scope.Tarih = today;
-    });
     fetchData(token);
     $(document).on("change", "#Tarih", function () {
+        AjandaTarihDegistir(scope.Tarih);
         fetchData(token);
     });
+
+    //console.log("VALUE : " + $("k-state-default k-nav-current").innerHTML);
     //console.log(document);
 });
 
+function AjandaTarihDegistir(tar) {
+    var scheduler = $("#scheduler").data("kendoScheduler");
+    var dizi = tar.split(".");
+    var tarih = new Date(dizi[2], (dizi[1] - 1), dizi[0]);
+    //console.log("TAR : " + tarih);
+    scheduler.date(tarih);
+};
 
+function AjandaRandevuFetchData(accessToken, bugun){
+    var dataal;
+    //------------------------------------------------------------
+    dataSource1 = new kendo.data.SchedulerDataSource({
+        batch: true,
+        data: dataal,
+        transport: {
+            read: function (options) {
+                $.ajax({
+                    type: "POST",
+                    data: { 'accessToken': accessToken, Tarih: tarihDuzenleFormataGore(bugun)/*Tarih: "16.01.2011"*/ },
+                    url: app.endpoints.ajandaRandevuDetay,
+                    dataType: "json",
+                    beforeSend: function () { app.application.showLoading(); },
+                    complete: function () { app.application.hideLoading(); },
+                    crossDomain: true,
+                    success: function (result) {
+                        if (result != null) {
+                            if (scope.AjandaRandevular.length != null){
+                                scope.$apply(function () {
+                                    scope.AjandaRandevular = result.Randevular;
+
+                                    for (var i = 0; i < scope.AjandaRandevular.length; i++)
+                                    {
+                                        scope.AjandaRandevular[i].BaslamaTarihi = new Date((new Date(scope.AjandaRandevular[i].BaslamaTarihi)).setHours(getSaat(scope.AjandaRandevular[i].BaslamaSaati), getDakika(scope.AjandaRandevular[i].BaslamaSaati)));
+                                        //DB de her ihtimale karşı bitiş saati girilmediyse başlangıç saatinden 1 saat sonraya bitiş tarihi atanır.
+                                        scope.AjandaRandevular[i].BitisTarihi = new Date((new Date(scope.AjandaRandevular[i].BitisTarihi)).setHours(getSaat(scope.AjandaRandevular[i].BitisSaati) == "" ? parseInt(getSaat(scope.AjandaRandevular[i].BaslamaSaati)) + 1 : getSaat(scope.AjandaRandevular[i].BitisSaati), getDakika(scope.AjandaRandevular[i].BitisSaati) == "" ? getDakika(scope.AjandaRandevular[i].BaslamaSaati) : getDakika(scope.AjandaRandevular[i].BitisSaati)));
+                                        //console.log("TARIH : " + tarihDuzenle(new Date(scope.AjandaRandevular[i].BaslamaTarihi)));
+                                        //console.log("TARIH : " + (new Date(scope.AjandaRandevular[i].BaslamaTarihi)).toString() + " --- " + scope.AjandaRandevular[i].BaslamaSaati);
+                                        //console.log("SAAT : " + getSaat(scope.AjandaRandevular[i].BaslamaSaati) + "////" + getDakika(scope.AjandaRandevular[i].BaslamaSaati));
+                                        //console.log("SAAT : " + new Date((new Date(scope.AjandaRandevular[i].BaslamaTarihi)).setHours(getSaat(scope.AjandaRandevular[i].BaslamaSaati), getDakika(scope.AjandaRandevular[i].BaslamaSaati))));
+
+                                        //console.log(scope.AjandaRandevular[i].Id
+                                        //+ "    " + scope.AjandaRandevular[i].BaslamaSaati
+                                        //+ "    " + scope.AjandaRandevular[i].BitisSaati
+                                        //+ " " + scope.AjandaRandevular[i].Konu
+                                        //+ " " + scope.AjandaRandevular[i].Hatirlatma
+                                        //+ " " + scope.AjandaRandevular[i].Yeri
+                                        //+ " " + scope.AjandaRandevular[i].Aciklama
+                                        //+ "    " + scope.AjandaRandevular[i].BaslamaTarihi
+                                        //+ "    " + scope.AjandaRandevular[i].BitisTarihi
+                                        //+ "    " + new Date((new Date(scope.AjandaRandevular[i].BaslamaTarihi)).setHours(getSaat(scope.AjandaRandevular[i].BaslamaSaati), getDakika(scope.AjandaRandevular[i].BaslamaSaati)))
+                                        //+ "    " + new Date((new Date(scope.AjandaRandevular[i].BitisTarihi)).setHours(getSaat(scope.AjandaRandevular[i].BitisSaati), getDakika(scope.AjandaRandevular[i].BitisSaati)))
+                                        //);
+                                    }
+                                });
+                                options.success(result.Randevular);
+                            }
+                        }
+                        else {
+                            window.localStorage.removeItem("accessToken");
+                            window.location = "index.html";
+                        }
+                    },
+                    error: function () {
+                        alert("Veriler alınırken bir hata meydana geldi.");
+                    }
+                });
+            }
+        },
+        schema: {
+            model: {
+                id: "taskId",
+                fields: {
+                    taskId: { from: "Id", type: "number" },
+                    title: { from: "Yeri", defaultValue: "No title", validation: { required: true } },
+                    start: { from: "BaslamaTarihi", type: "date" },
+                    end: { from: "BitisTarihi", type: "date" },
+                    //startTimezone: { from: "BaslamaSaati" },
+                    //endTimezone: { from: "BitisSaati" },
+                    description: { from: "Konu" }//,
+                    //recurrenceId: { from: "RecurrenceID" },
+                    //recurrenceRule: { from: "RecurrenceRule" },
+                    //recurrenceException: { from: "RecurrenceException" },
+                    //ownerId: { from: "projectid", defaultValue: 1 },
+                    //isAllDay: { from: "IsAllDay", type: "boolean" }
+                }
+            }
+        }
+    });
+};
 
 function RandevuClick(value) {
 
@@ -829,7 +1011,7 @@ function RandevuClick(value) {
         window.location = "index.html";
     scope = angular.element(document.getElementById("belediyeCTRL")).scope();
 
-    console.log(value);
+    //console.log(value);
     RandevuId = $(value).find("#SecilenRandevuId")[0].innerHTML;
     //console.log(RandevuId);
 
@@ -897,7 +1079,7 @@ function ArayanClick(value)
 function RandevuAciklamaEkle() {
     var BaskanAciklama = document.getElementById('AciklamaId').value;
     var RandevuAciklama = document.getElementById('RandevuAciklamaData').innerHTML;
-    console.log(BaskanAciklama);
+    //console.log(BaskanAciklama);
     //console.log(RandevuId);
     //console.log(RandevuAciklama);
 
@@ -938,7 +1120,7 @@ function ArayanSonucEkle()
 {
     var BaskanSonuc = document.getElementById('SonucId').value;
     var ArayanSonuc = document.getElementById('ArayanSonucData').innerHTML;
-    console.log(BaskanSonuc);
+    //console.log(BaskanSonuc);
     //console.log(ArayanId);
     //console.log(ArayanSonuc);
 
@@ -973,8 +1155,6 @@ function ArayanSonucEkle()
         });
     }
 };
-
-
 
 function tarihDuzenle(value) {
     var day;
@@ -1034,6 +1214,14 @@ function addDays(date, days) {
     return tomorrow;
 }
 
+function getSaat(value) {
+    return (value.split(":"))[0];
+};
+
+function getDakika(value) {
+    return (value.split(":"))[1];
+};
+
 /*function getDate() {
     return scope.Tarih.split("-").reverse().join(".");
 };*/
@@ -1083,6 +1271,11 @@ function onSelect(e) {
     else if (item.attr("id") === "randevu") {
         $("#tarihList").prependTo("#tabstrip-randevular");
         fetchData(token);
+    }
+    else if (item.attr("id") === "ajanda") {
+       // $("#tarihList").prependTo("#tabstrip-ajanda");
+        //fetchData(token);
+        //ajandaRandevuFetchData(token);
     }
     else if (item.attr("id") === "cikis") {
         $.ajax({

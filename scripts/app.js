@@ -30,7 +30,7 @@
     //var hostAdress = getIP();
     
 
-    function getIP()
+    /*function getIP()
     {
         if (window.XMLHttpRequest) {
             var httpObj = new XMLHttpRequest();                         //yeni tarayıcılarda xml dosyasını bu şekilde import edebiliriz
@@ -44,7 +44,7 @@
 
         var veri = httpObj.responseText;
         return veri.toString();
-    };
+    };*/
     var hostAdress = window.localStorage.getItem("ipAdres");
     //console.log(hostAdress);
 
@@ -66,7 +66,8 @@
 
         
         randevuDetayAciklama: "http://" + hostAdress + "/BelBaskan/api/Auth/RandevuDetayAciklamaEkle",
-        randevuDetay: "http://" + hostAdress + "/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula"
+        randevuDetay: "http://" + hostAdress + "/BelBaskan/api/Auth/RandevuDetayBilgisiSorgula",
+        ajandaRandevuDetay: "http://" + hostAdress + "/BelBaskan/api/Auth/AjandaRandevuDetay"
     };
 
 })(window);

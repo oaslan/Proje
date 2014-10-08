@@ -7,9 +7,13 @@
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.bootstrap.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.default.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.dataviz.min.css" rel="stylesheet" />
+    <!--<link href="kendo/styles/kendo.dataviz.default.min.css" rel="stylesheet" />-->
     <link href="kendo/styles/kendo.dataviz.flat.min.css" rel="stylesheet" />
-
+    <!--<link href="kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" />--> <!-- Day - Week butonlarını sola atar-->
+    
     <!--Oğuz ASLAN Additional Style Settings-->
     <!--  <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.default.min.css" rel="stylesheet" />
@@ -30,21 +34,59 @@
     
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8" src="kendo/js/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="kendo/js/kendo.all.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="scripts/app.js"></script>
     <script type="text/javascript" charset="utf-8" src="scripts/angular.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="kendo/js/kendo.all.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="kendo/js/kendo.timezones.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/app.js"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/angular-kendo.js"></script>
     <script type="text/javascript" charset="utf-8" src="scripts/baskanmodel.js"></script>
 
     <!--Oğuz ASLAN Additional Style Settings-->
-    <style>
+    <style scoped>
         .datePicker {
             font-size: 15px;
             font-family: Arial, Helvetica, sans-serif;
         }
+
+        .randevu-template p {
+            margin: 5px 0 0;
+        }
+
+        .randevu-template div {
+            font-size: 18px;
+        }
+
+        .randevu-template h3 {
+            padding: 0 2px 2px;
+            margin: 2px 2px 2px 2px;
+            font-size: 14px;
+            color:black;
+        }
+
+        .randevu-template a {
+            color: #ffffff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .k-state-hover .randevu-template a,
+        .randevu-template a:hover {
+            color: #000000;
+        }
+
+        .k-scheduler-table th {
+            font-size: 14.7px;
+        }
+
+
     </style>
+
     <script src="http://cdn.kendostatic.com/2013.2.716/js/cultures/kendo.culture.tr-TR.min.js" type="text/javascript"></script>
-    <script type="text/javascript" charset="utf-8" src="scripts/angular-kendo.js"></script>
+    
     <script type="text/javascript" src="scripts/date.js"></script>
+    <script type="text/javascript" src="scripts/jquery.iecors.js" ></script>
+    
+
 
 </head>
 <body id="belediyeCTRL" ng-controller="belediyeCTRL" onload="onLoad()">
@@ -52,14 +94,14 @@
 
     <div data-role="view" id="tabstrip-randevular" data-title="Randevular" data-layout="mobile-tabstrip">
 
-        <ul id="tarihList" data-role="listview" data-style="inset">
-            <li>
-                <div style="width:100%; height:38px;">
+        <ul id="tarihList" data-role="listview" data-style="inset" style="margin:4px 4px 0 4px;">
+            <li style="margin: 0 0 0 0; height:92px; width:100%">
+                <div style="width:100%; height:38px; margin:0 0 0 0;">
                     <label style="width:23%; float:left; text-align:left; font-size:13px">Önceki<br>Gün</label>
                     <input style="width:50%;text-align:center" type="date" id="Tarih" class="datePicker" ng-model="Tarih">
                     <label style="width:23%; float:right; text-align:right; font-size:13px">Sonraki<br>Gün</label>
                 </div>
-                <div style="width:100%; height:45px">
+                <div style="width:100%; height:45px; margin: 0 0 0 0;">
                     <div style="width:23%;float:left">
                         <a id="Dun" data-role="button" style="background-image:url(styles/images/left-arrow.gif); background-size: 100%; width: 40px;height: 40px;"></a>
                     </div>
@@ -71,66 +113,65 @@
             </li>
         </ul>
 
-        <ul data-role="listview" data-style="inset">
+        <ul data-role="listview" data-style="inset" style="margin:5px 4px 0 4px;">
             <li ng-show="Randevular.length < 1 || Randevular == null">Randevu Kaydı Yok</li>
-            <li ng-repeat="r in Randevular" style="margin:0 0 0 0;">
-                <a onclick="RandevuClick(this)">
-                    <div class="news" style="margin:0 0 0 0; float:left; width:85%">
-                        <div class="pull-left" style="margin:0 0 0 0;">
-                            <div class="news_icon">
-                                <span class="label label-primary">{{r.BaslamaSaati}}</span>
-                                <label></label>
-                                <img src="styles/images/news_icon.gif" alt="" title="">
-                            </div>
-                        </div>
-                        <div class="media-body" style="margin:0 0 0 0;">
-                            <h2 style="font-size:13px;"><strong>{{r.Yeri | uppercase}}</strong></h2>
-                            <div class="news_content" style="margin-right:12px">
-                                <span style="font-size:10px;"><strong>{{ r.Konu | uppercase}}</strong></span><br>
-                                <p style="font-size:13px" id="SecilenRandevuId" ng-show="false">{{ r.Id }}</p>
-                            </div>
+            <li ng-repeat="r in Randevular" style="margin: 0 0 0 0; width:100%;" onclick="RandevuClick(this)">
+                <div class="news" style="margin:0 0 0 0; width:100%; height:100%;">
+                    <div class="news pull-left news_icon" style="margin:0 0 0 0;">
+                        <span class="label label-primary">{{r.BaslamaSaati}}</span>
+                        <label></label>
+                        <img src="styles/images/news_icon.gif" alt="" title="">
+                    </div>
+                    <div class="media-body" style="margin:0 0 0 0;">
+                        <h2 style="font-size:13px;"><strong>{{r.Yeri | uppercase}}</strong></h2>
+                        <div class="news_content" style="margin-right:12px">
+                            <span style="font-size:10px;"><strong>{{ r.Konu | uppercase}}</strong></span><br>
+                            <p style="font-size:13px" id="SecilenRandevuId" ng-show="false">{{ r.Id }}</p>
                         </div>
                     </div>
-                    <div style="float:right; width:15%">
-                        <div class="read_more_link" style="text-decoration:none;color:#f7941d; font-size:12px; margin-top:20px">Detay</div>
-                    </div>
-                </a>
+                </div>
+                <div class="read_more_link" style=" width:100%; height:14px; margin: 0 0 0 0; text-decoration:none; color:#f7941d; font-size:12px; text-align:right;">
+                    Detay
+                </div>
             </li>
         </ul>
     </div>
-
 
     <div data-role="view" id="tabstrip-aramalar" data-title="Arayanlar" data-layout="mobile-tabstrip">
-
-        <ul data-role="listview" data-style="inset">
+        <ul data-role="listview" data-style="inset" style="margin:5px 4px 0 4px;">
             <li ng-show="Arayanlar.length < 1 || Arayanlar == null">Arama Kaydı Yok</li>
-
-            <li ng-repeat="a in Arayanlar" style="margin:0 0 0 0;">
-                <a onclick="ArayanClick(this)">
-                    <div class="news" style="margin:0 0 0 0; float:left; width:85%">
-                        <div class="pull-left" style="margin:0 0 0 0;">
-                            <div class="news_icon">
-                                <span class="label label-primary">{{a.AramaSaati}}</span>
-                                <label></label>
-                                <img src="styles/images/testimonials_icon.gif" style="width:22px; height:40px; align-content:center" alt="" title="">
-                            </div>
-                        </div>
-                        <div class="media-body" style="margin:0 0 0 0;">
-                            <h2 style="font-size:13px;"><strong>{{a.ArayanAdi | uppercase}}</strong></h2>
-                            <div class="news_content" style="margin-right:12px; font-size:12px">
-                                <span style="font-size:10px;"><strong>{{ a.ArayanSoyadi | uppercase}}</strong></span><br>
-                                <p ng-show="a.Konu.length > 0" class="label label-success" style="font-size:10px;">Konu:</p>{{ a.Konu }}
-                                <p style="font-size:10px" id="SecilenArayanId" ng-show="false">{{ a.Id }}</p>
-                            </div>
+            <li ng-repeat="a in Arayanlar" style="margin: 0 0 0 0; width:100%;" onclick="ArayanClick(this)">
+                <div class="news" style="margin:0 0 0 0; width:100%; height:100%;">
+                    <div class="news pull-left news_icon" style="margin:0 0 0 0;">
+                        <span class="label label-primary">{{a.AramaSaati}}</span>
+                        <label></label>
+                        <img src="styles/images/testimonials_icon.gif" style="width:22px; height:40px; align-content:center" alt="" title="">
+                    </div>
+                    <div class="media-body" style="margin:0 0 0 0;">
+                        <h2 style="font-size:13px;"><strong>{{a.ArayanAdi | uppercase}}</strong></h2>
+                        <div class="news_content" style="margin-right:12px; font-size:12px">
+                            <span style="font-size:10px;"><strong>{{ a.ArayanSoyadi | uppercase}}</strong></span><br>
+                            <p ng-show="a.Konu.length > 0" class="label label-success" style="font-size:10px;">Konu:</p>{{ a.Konu }}
+                            <p style="font-size:10px" id="SecilenArayanId" ng-show="false">{{ a.Id }}</p>
                         </div>
                     </div>
-                    <div style="float:right; width:15%">
-                        <div class="read_more_link" style="text-decoration:none;color:#f7941d;font-size:12px;margin-top:20px">Detay</div>
-                    </div>
-                </a>
+                </div>
+                <div class="read_more_link" style=" width:100%; height:14px; margin: 0 0 0 0; text-decoration:none; color:#f7941d; font-size:12px; text-align:right;">
+                    Detay
+                </div>
             </li>
         </ul>
     </div>
+
+    <div data-role="view" id="tabstrip-ajanda" data-title="Randevular" data-layout="mobile-tabstrip">
+        <div id="scheduler"></div>
+    </div>
+
+    <script id="event-template" type="text/x-kendo-template">
+        <div class="randevu-template">
+            <h3>#: title #</h3>
+        </div>
+    </script>
 
     <div data-role="view" id="tabstrip-raporlar" data-title="Raporlar" data-layout="mobile-tabstrip">
         <ul data-role="listview" data-style="inset" data-type="group" style="font-size:13px">
@@ -268,6 +309,8 @@
             </div>
         </form>
     </div>
+
+
 
 
     <div data-role="view" id="rapor1" data-title="Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
@@ -540,11 +583,11 @@
         <p class="alert alert-success text-center">Çıkış Yapılıyor..</p>
     </div>
     
-    <div data-role="layout" data-id="mobile-tabstrip">
-        <header data-role="header">
-            <div data-role="navbar">
-                <a data-role="backbutton" class="fui-arrow-left"style="background-image:url(styles/images/back-button.png); background-size: 100%; width:81px; height:31px; float:left; margin-left:14px;"></a>
-                <span data-role="view-title" style="font-size:20px; color:darkred"></span>
+    <div data-role="layout" data-id="mobile-tabstrip" >
+        <header data-role="header" style="width:100%;">
+            <div data-role="navbar" style=" height:40px;">
+                <a data-role="backbutton" class="fui-arrow-left" style="background-image:url(styles/images/back-button.png); background-size: 100%; width:81px; height:31px; float:left; margin-left:14px; margin-top:5px;"></a>
+                <span data-role="view-title" style="font-size:20px; color:darkred; margin-top:5px;"></span>
             </div>
         </header>
         <p>TabStrip</p>
@@ -552,6 +595,7 @@
             <div id="tabstrip" data-role="tabstrip" data-select="onSelect">
                 <a id="randevu" href="#tabstrip-randevular" data-icon="recents">Randevular</a>
                 <a id="arama" href="#tabstrip-aramalar" data-icon="phone">Aramalar</a>
+                <a id="ajanda" href="#tabstrip-ajanda" data-icon="refresh">Ajanda</a>
                 <!--<a href="#tabstrip-raporlar" data-icon="bookmarks">Raporlar</a>-->
                 <a href="#tabstrip-cikis" id="cikis" data-tap="Cikis" data-icon="more">Çıkış</a>
             </div>

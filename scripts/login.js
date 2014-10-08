@@ -99,7 +99,7 @@ function MevcutIPGoster()
 
     //var mevcutIP = getIP();
     var mevcutIP = window.localStorage.getItem("ipAdres");
-    console.log(mevcutIP);
+    //console.log(mevcutIP);
     document.getElementById("MevcutServisIP").textContent = mevcutIP.toString();
 };
 

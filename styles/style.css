@@ -239,12 +239,12 @@ padding:10px 0 0 10px;
 }
 .news{
 clear:both;
-padding:10px 0 10px 0;
+/*padding:10px 0 10px 0;*/
 }
 .news_icon{
 width:30px;
 float:left;
-padding:0 10px 0 0;
+/*padding:0 10px 0 0;*/
 }
 .news_content{
 float:left;
